@@ -64,6 +64,13 @@ tests covering documented boundary conditions. UI rendering code in
 `src/ui/` and `app.py` is verified by running the app directly, per
 `CLAUDE.md`.
 
+The full app was also validated end-to-end (sample-data load, CSV/Excel
+upload, invalid-file handling, KPI accuracy, combined filters, chart
+updates, expiry/stock-risk boundary conditions, all three report
+downloads, the marquee and its reduced-motion behaviour, and the
+governance disclosures) — see `docs/PROGRESS.md`'s "Phase 3
+Verification" entry for the full checklist and results.
+
 ## Project structure
 
 ```

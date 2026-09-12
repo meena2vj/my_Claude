@@ -1,0 +1,28 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.2
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: detect-private-key
+      - id: check-added-large-files
+        args: [--maxkb=2000]
+
+  - repo: local
+    hooks:
+      - id: block-env-file
+        name: Block .env from being committed
+        entry: bash -c 'if git diff --cached --name-only | grep -qE "(^|/)\.env$"; then echo "Refusing to commit .env -- secrets must stay out of source control."; exit 1; fi'
+        language: system
+        pass_filenames: false
+
+      - id: require-synthetic-marker-on-data-files
+        name: Require synthetic marker on any committed data file
+        entry: bash -c 'for f in $(git diff --cached --name-only | grep -E "^data/.*\.csv$"); do head -1 "$f" | grep -q "synthetic" || { echo "$f is missing a synthetic marker column"; exit 1; }; done'
+        language: system
+        pass_filenames: false

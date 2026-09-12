@@ -390,3 +390,34 @@ existing 10 MB upload cap, and unpinned upper-bound versions in
 
 Phase 3 is complete. The dashboard, its tests, its config/doc files, and
 the audit fixes above are the full scope of this session's work.
+
+## Phase 3 Verification — Final End-to-End Validation
+Status: Complete — 13/13 checks passed, no confirmed failures, no code changes
+
+Ran a dedicated end-to-end validation pass against the full 13-point list
+below, using `streamlit.testing.v1.AppTest` to drive the real `app.py` in
+process (uploads, filter widgets, tab switches, download buttons) without
+needing a browser, plus direct calls into `src/` for the boundary-condition
+and disk-write checks, plus a full `pytest` run.
+
+| # | Check | Result |
+|---|---|---|
+| 1 | Default synthetic CSV loads | Pass — 200 rows, correct lineage caption |
+| 2 | CSV and Excel uploads work | Pass — both `.csv` and `.xlsx` uploads processed and reflected in the success message |
+| 3 | Invalid files show clear errors | Pass — wrong-extension rejection (`tests/test_upload.py::test_wrong_extension_raises`) and malformed-content rejection (AppTest, uploading a garbage `.xls`) both raise a clear `DataValidationError` and the app falls back to the sample dataset rather than crashing |
+| 4 | KPI values match the processed data | Pass — all six KPI values matched an independently-recomputed `apply_risk_engine()` result byte-for-byte |
+| 5 | All filters work together | Pass — combined Warehouse + Risk Level selection (AND logic) produced the exact expected row count |
+| 6 | Charts update when filters change | Pass — Plotly chart specs on the Executive Dashboard tab changed after applying a Risk Level filter |
+| 7 | Expiry and stock-risk calculations are correct | Pass — re-verified the boundary cases (30/31-day expiry cutoff, stock exactly at reorder level, low stock, overstock) against `.claude/skills/pharma-risk/SKILL.md` |
+| 8 | All three reports download correctly | Pass — all three `download_button`s are wired to the correct tab with the correct label, and the underlying CSV/CSV/Markdown content each one serialises was independently regenerated and checked (200 rows, 24 Critical rows, valid Markdown) |
+| 9 | The "Project Analytics" moving line works | Pass — marquee markup contains the required text, `@keyframes`, and `animation` CSS |
+| 10 | Reduced-motion accessibility is supported | Pass — `prefers-reduced-motion: reduce` sets `animation: none`; hover sets `animation-play-state: paused` |
+| 11 | Governance and disclaimer content are visible | Pass — synthetic-data notice, no-medical-advice warning, calculation rules, and session-only-processing statement all present on the Governance tab |
+| 12 | No data is stored permanently | Pass — `src/upload.py` contains no `open(`/`to_csv`/`to_excel` disk-write call; the only disk read anywhere is `src/data_loader.py` loading the bundled sample dataset, which is expected |
+| 13 | All tests pass | Pass — `pytest` run: **174 passed, 0 failed** |
+
+No confirmed failures were found, so no application code was changed in
+this verification pass, per instructions ("fix only confirmed failures").
+All dependencies in `requirements.txt` were already installed
+(`streamlit` 1.63.0, `pandas` 3.0.5, `plotly` 7.0.0, `openpyxl` 3.1.5,
+`pytest` 9.1.1); nothing needed to be installed.

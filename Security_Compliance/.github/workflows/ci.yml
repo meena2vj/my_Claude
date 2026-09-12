@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run tests
+        run: python -m pytest -q
+
+      - name: Security scan (bandit)
+        run: python -m bandit -r . -x ./.venv,./tests
+
+      - name: Dependency vulnerability scan (pip-audit)
+        run: python -m pip-audit -r requirements.txt
+
+      - name: Check for hardcoded secrets in env config
+        run: |
+          if [ -f .env ]; then
+            echo ".env must not be committed"
+            exit 1
+          fi
