@@ -1,0 +1,16 @@
+product_id,product_name,therapeutic_area,market_status,synthetic
+PRD-001,Compound-A00,Endocrinology,Investigational,True
+PRD-002,Compound-B01,Immunology,Approved,True
+PRD-003,Compound-C02,Neurology,Investigational,True
+PRD-004,Compound-D03,Neurology,Approved,True
+PRD-005,Compound-E04,Neurology,Investigational,True
+PRD-006,Compound-F05,Endocrinology,Investigational,True
+PRD-007,Compound-G06,Cardiology,Investigational,True
+PRD-008,Compound-H07,Oncology,Approved,True
+PRD-009,Compound-I08,Cardiology,Investigational,True
+PRD-010,Compound-J09,Oncology,Investigational,True
+PRD-011,Compound-K10,Oncology,Investigational,True
+PRD-012,Compound-L11,Oncology,Withdrawn,True
+PRD-013,Compound-M12,Immunology,Withdrawn,True
+PRD-014,Compound-N13,Immunology,Approved,True
+PRD-015,Compound-O14,Immunology,Investigational,True

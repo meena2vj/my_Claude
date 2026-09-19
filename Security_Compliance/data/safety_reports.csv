@@ -1,0 +1,301 @@
+report_id,product_id,patient_id,report_type,route,risk_flag,synthetic
+SR-000001,PRD-002,PT-000460,Spontaneous,Topical,False,True
+SR-000002,PRD-004,PT-000083,Spontaneous,IV,True,True
+SR-000003,PRD-015,PT-000315,Spontaneous,Subcutaneous,True,True
+SR-000004,PRD-001,PT-000015,Spontaneous,IV,True,True
+SR-000005,PRD-005,PT-000052,Spontaneous,Oral,False,True
+SR-000006,PRD-008,PT-000325,Clinical Trial,Oral,False,True
+SR-000007,PRD-005,PT-000074,Spontaneous,IV,True,True
+SR-000008,PRD-005,PT-000035,Clinical Trial,Topical,False,True
+SR-000009,PRD-002,PT-000011,Spontaneous,Subcutaneous,False,True
+SR-000010,PRD-007,PT-000353,Clinical Trial,Subcutaneous,True,True
+SR-000011,PRD-012,PT-000182,Spontaneous,Topical,True,True
+SR-000012,PRD-009,PT-000143,Clinical Trial,IV,False,True
+SR-000013,PRD-014,PT-000320,Spontaneous,Oral,True,True
+SR-000014,PRD-011,PT-000086,Literature,Subcutaneous,False,True
+SR-000015,PRD-012,PT-000261,Literature,IV,True,True
+SR-000016,PRD-007,PT-000242,Clinical Trial,Subcutaneous,False,True
+SR-000017,PRD-010,PT-000338,Literature,Topical,False,True
+SR-000018,PRD-009,PT-000312,Spontaneous,Subcutaneous,False,True
+SR-000019,PRD-013,PT-000338,Clinical Trial,Subcutaneous,True,True
+SR-000020,PRD-008,PT-000107,Spontaneous,Topical,False,True
+SR-000021,PRD-007,PT-000071,Literature,Topical,False,True
+SR-000022,PRD-002,PT-000267,Spontaneous,Oral,False,True
+SR-000023,PRD-013,PT-000029,Spontaneous,Oral,False,True
+SR-000024,PRD-007,PT-000228,Clinical Trial,Topical,True,True
+SR-000025,PRD-012,PT-000313,Spontaneous,Topical,False,True
+SR-000026,PRD-011,PT-000411,Clinical Trial,Topical,False,True
+SR-000027,PRD-001,PT-000327,Spontaneous,IV,False,True
+SR-000028,PRD-010,PT-000498,Clinical Trial,Topical,False,True
+SR-000029,PRD-008,PT-000279,Literature,Subcutaneous,True,True
+SR-000030,PRD-004,PT-000224,Clinical Trial,Oral,True,True
+SR-000031,PRD-004,PT-000123,Spontaneous,IV,False,True
+SR-000032,PRD-010,PT-000337,Spontaneous,Subcutaneous,True,True
+SR-000033,PRD-002,PT-000406,Spontaneous,Oral,True,True
+SR-000034,PRD-010,PT-000161,Spontaneous,IV,False,True
+SR-000035,PRD-013,PT-000038,Clinical Trial,IV,False,True
+SR-000036,PRD-002,PT-000006,Spontaneous,Topical,False,True
+SR-000037,PRD-001,PT-000317,Spontaneous,IV,True,True
+SR-000038,PRD-001,PT-000332,Spontaneous,Subcutaneous,False,True
+SR-000039,PRD-011,PT-000061,Literature,Oral,False,True
+SR-000040,PRD-013,PT-000012,Spontaneous,IV,False,True
+SR-000041,PRD-015,PT-000328,Spontaneous,Topical,True,True
+SR-000042,PRD-001,PT-000199,Spontaneous,Oral,False,True
+SR-000043,PRD-008,PT-000209,Spontaneous,Subcutaneous,False,True
+SR-000044,PRD-001,PT-000132,Literature,Topical,False,True
+SR-000045,PRD-006,PT-000360,Spontaneous,Subcutaneous,False,True
+SR-000046,PRD-005,PT-000373,Clinical Trial,IV,False,True
+SR-000047,PRD-010,PT-000027,Clinical Trial,IV,False,True
+SR-000048,PRD-014,PT-000045,Clinical Trial,Subcutaneous,False,True
+SR-000049,PRD-013,PT-000278,Clinical Trial,Oral,False,True
+SR-000050,PRD-001,PT-000302,Clinical Trial,IV,False,True
+SR-000051,PRD-004,PT-000073,Spontaneous,IV,False,True
+SR-000052,PRD-005,PT-000080,Spontaneous,IV,False,True
+SR-000053,PRD-004,PT-000342,Clinical Trial,IV,False,True
+SR-000054,PRD-006,PT-000228,Clinical Trial,Topical,False,True
+SR-000055,PRD-010,PT-000060,Clinical Trial,Oral,False,True
+SR-000056,PRD-012,PT-000305,Spontaneous,Subcutaneous,False,True
+SR-000057,PRD-015,PT-000037,Spontaneous,Subcutaneous,False,True
+SR-000058,PRD-011,PT-000116,Spontaneous,Oral,False,True
+SR-000059,PRD-005,PT-000357,Spontaneous,Subcutaneous,True,True
+SR-000060,PRD-003,PT-000112,Spontaneous,IV,False,True
+SR-000061,PRD-006,PT-000032,Spontaneous,Oral,False,True
+SR-000062,PRD-012,PT-000480,Clinical Trial,IV,True,True
+SR-000063,PRD-015,PT-000113,Clinical Trial,Subcutaneous,True,True
+SR-000064,PRD-006,PT-000258,Clinical Trial,Subcutaneous,False,True
+SR-000065,PRD-003,PT-000413,Clinical Trial,Topical,False,True
+SR-000066,PRD-001,PT-000495,Spontaneous,Subcutaneous,False,True
+SR-000067,PRD-002,PT-000405,Spontaneous,IV,True,True
+SR-000068,PRD-010,PT-000170,Clinical Trial,Subcutaneous,False,True
+SR-000069,PRD-009,PT-000428,Clinical Trial,Topical,True,True
+SR-000070,PRD-010,PT-000007,Clinical Trial,Oral,False,True
+SR-000071,PRD-001,PT-000164,Clinical Trial,Oral,False,True
+SR-000072,PRD-007,PT-000100,Clinical Trial,IV,True,True
+SR-000073,PRD-003,PT-000265,Clinical Trial,Oral,True,True
+SR-000074,PRD-006,PT-000446,Clinical Trial,IV,False,True
+SR-000075,PRD-010,PT-000387,Clinical Trial,Subcutaneous,False,True
+SR-000076,PRD-005,PT-000500,Spontaneous,Oral,True,True
+SR-000077,PRD-010,PT-000069,Spontaneous,Topical,False,True
+SR-000078,PRD-005,PT-000377,Spontaneous,Subcutaneous,False,True
+SR-000079,PRD-008,PT-000363,Clinical Trial,IV,True,True
+SR-000080,PRD-007,PT-000229,Clinical Trial,Topical,False,True
+SR-000081,PRD-006,PT-000049,Spontaneous,IV,False,True
+SR-000082,PRD-002,PT-000053,Spontaneous,IV,False,True
+SR-000083,PRD-009,PT-000457,Clinical Trial,Subcutaneous,False,True
+SR-000084,PRD-015,PT-000148,Spontaneous,Topical,False,True
+SR-000085,PRD-010,PT-000319,Clinical Trial,IV,True,True
+SR-000086,PRD-012,PT-000473,Spontaneous,Subcutaneous,False,True
+SR-000087,PRD-013,PT-000247,Spontaneous,Subcutaneous,False,True
+SR-000088,PRD-001,PT-000105,Spontaneous,Subcutaneous,False,True
+SR-000089,PRD-012,PT-000243,Spontaneous,Subcutaneous,False,True
+SR-000090,PRD-004,PT-000115,Spontaneous,IV,False,True
+SR-000091,PRD-010,PT-000091,Spontaneous,IV,False,True
+SR-000092,PRD-015,PT-000406,Spontaneous,Oral,True,True
+SR-000093,PRD-014,PT-000173,Spontaneous,Topical,False,True
+SR-000094,PRD-007,PT-000343,Clinical Trial,Subcutaneous,True,True
+SR-000095,PRD-013,PT-000364,Spontaneous,Topical,False,True
+SR-000096,PRD-010,PT-000275,Spontaneous,Topical,False,True
+SR-000097,PRD-002,PT-000271,Spontaneous,Subcutaneous,False,True
+SR-000098,PRD-004,PT-000091,Literature,Oral,False,True
+SR-000099,PRD-015,PT-000265,Clinical Trial,IV,True,True
+SR-000100,PRD-014,PT-000376,Literature,Topical,False,True
+SR-000101,PRD-014,PT-000098,Literature,Oral,False,True
+SR-000102,PRD-006,PT-000117,Spontaneous,Subcutaneous,False,True
+SR-000103,PRD-005,PT-000346,Clinical Trial,Oral,False,True
+SR-000104,PRD-013,PT-000491,Spontaneous,Subcutaneous,False,True
+SR-000105,PRD-001,PT-000197,Literature,Topical,False,True
+SR-000106,PRD-014,PT-000415,Spontaneous,Subcutaneous,True,True
+SR-000107,PRD-010,PT-000092,Spontaneous,Subcutaneous,False,True
+SR-000108,PRD-010,PT-000285,Literature,Topical,False,True
+SR-000109,PRD-007,PT-000472,Clinical Trial,Subcutaneous,False,True
+SR-000110,PRD-015,PT-000221,Literature,IV,False,True
+SR-000111,PRD-012,PT-000254,Spontaneous,Topical,True,True
+SR-000112,PRD-001,PT-000078,Spontaneous,Subcutaneous,False,True
+SR-000113,PRD-008,PT-000265,Spontaneous,Oral,True,True
+SR-000114,PRD-013,PT-000293,Spontaneous,IV,True,True
+SR-000115,PRD-002,PT-000491,Spontaneous,Oral,False,True
+SR-000116,PRD-012,PT-000101,Spontaneous,Topical,False,True
+SR-000117,PRD-004,PT-000184,Clinical Trial,Subcutaneous,False,True
+SR-000118,PRD-008,PT-000324,Spontaneous,Oral,False,True
+SR-000119,PRD-014,PT-000472,Clinical Trial,Topical,False,True
+SR-000120,PRD-008,PT-000119,Literature,IV,True,True
+SR-000121,PRD-001,PT-000348,Clinical Trial,Subcutaneous,False,True
+SR-000122,PRD-001,PT-000440,Spontaneous,Oral,False,True
+SR-000123,PRD-012,PT-000317,Spontaneous,Oral,False,True
+SR-000124,PRD-014,PT-000214,Spontaneous,Oral,True,True
+SR-000125,PRD-005,PT-000118,Clinical Trial,IV,False,True
+SR-000126,PRD-015,PT-000145,Spontaneous,IV,False,True
+SR-000127,PRD-007,PT-000026,Spontaneous,Subcutaneous,True,True
+SR-000128,PRD-001,PT-000077,Literature,IV,True,True
+SR-000129,PRD-008,PT-000219,Clinical Trial,Oral,False,True
+SR-000130,PRD-015,PT-000071,Clinical Trial,Topical,True,True
+SR-000131,PRD-004,PT-000006,Spontaneous,Oral,False,True
+SR-000132,PRD-015,PT-000347,Literature,IV,False,True
+SR-000133,PRD-010,PT-000036,Spontaneous,Topical,False,True
+SR-000134,PRD-006,PT-000071,Spontaneous,IV,False,True
+SR-000135,PRD-011,PT-000298,Literature,Topical,False,True
+SR-000136,PRD-007,PT-000461,Literature,IV,False,True
+SR-000137,PRD-002,PT-000363,Spontaneous,Subcutaneous,False,True
+SR-000138,PRD-014,PT-000017,Spontaneous,IV,False,True
+SR-000139,PRD-006,PT-000084,Spontaneous,Subcutaneous,False,True
+SR-000140,PRD-009,PT-000371,Clinical Trial,Topical,True,True
+SR-000141,PRD-012,PT-000367,Clinical Trial,Topical,False,True
+SR-000142,PRD-002,PT-000196,Spontaneous,Oral,True,True
+SR-000143,PRD-011,PT-000475,Spontaneous,Oral,False,True
+SR-000144,PRD-006,PT-000445,Clinical Trial,Topical,False,True
+SR-000145,PRD-009,PT-000372,Clinical Trial,IV,False,True
+SR-000146,PRD-007,PT-000375,Spontaneous,IV,False,True
+SR-000147,PRD-012,PT-000393,Clinical Trial,Subcutaneous,True,True
+SR-000148,PRD-003,PT-000075,Literature,IV,False,True
+SR-000149,PRD-002,PT-000351,Spontaneous,IV,False,True
+SR-000150,PRD-007,PT-000470,Clinical Trial,Topical,False,True
+SR-000151,PRD-002,PT-000113,Clinical Trial,Subcutaneous,True,True
+SR-000152,PRD-004,PT-000008,Clinical Trial,Subcutaneous,True,True
+SR-000153,PRD-010,PT-000181,Literature,Topical,True,True
+SR-000154,PRD-013,PT-000135,Clinical Trial,Oral,False,True
+SR-000155,PRD-011,PT-000475,Clinical Trial,Oral,False,True
+SR-000156,PRD-005,PT-000223,Spontaneous,Topical,False,True
+SR-000157,PRD-013,PT-000331,Clinical Trial,Topical,False,True
+SR-000158,PRD-007,PT-000491,Spontaneous,Oral,False,True
+SR-000159,PRD-003,PT-000395,Spontaneous,Topical,False,True
+SR-000160,PRD-012,PT-000375,Spontaneous,Subcutaneous,False,True
+SR-000161,PRD-008,PT-000485,Clinical Trial,Oral,True,True
+SR-000162,PRD-006,PT-000345,Literature,Subcutaneous,True,True
+SR-000163,PRD-010,PT-000116,Clinical Trial,IV,False,True
+SR-000164,PRD-011,PT-000364,Clinical Trial,IV,True,True
+SR-000165,PRD-004,PT-000161,Spontaneous,Topical,False,True
+SR-000166,PRD-002,PT-000166,Clinical Trial,Oral,False,True
+SR-000167,PRD-008,PT-000323,Literature,Oral,False,True
+SR-000168,PRD-001,PT-000158,Spontaneous,Subcutaneous,False,True
+SR-000169,PRD-010,PT-000013,Clinical Trial,IV,False,True
+SR-000170,PRD-007,PT-000500,Clinical Trial,Oral,False,True
+SR-000171,PRD-004,PT-000286,Spontaneous,Topical,True,True
+SR-000172,PRD-009,PT-000336,Clinical Trial,Oral,False,True
+SR-000173,PRD-006,PT-000405,Spontaneous,Subcutaneous,False,True
+SR-000174,PRD-006,PT-000318,Spontaneous,Oral,True,True
+SR-000175,PRD-004,PT-000306,Spontaneous,Topical,False,True
+SR-000176,PRD-011,PT-000396,Spontaneous,IV,False,True
+SR-000177,PRD-014,PT-000148,Spontaneous,Subcutaneous,False,True
+SR-000178,PRD-010,PT-000415,Literature,Topical,False,True
+SR-000179,PRD-004,PT-000363,Spontaneous,Subcutaneous,False,True
+SR-000180,PRD-013,PT-000092,Clinical Trial,Oral,False,True
+SR-000181,PRD-002,PT-000074,Clinical Trial,IV,False,True
+SR-000182,PRD-005,PT-000440,Spontaneous,Subcutaneous,True,True
+SR-000183,PRD-001,PT-000448,Spontaneous,Oral,False,True
+SR-000184,PRD-013,PT-000497,Literature,Subcutaneous,False,True
+SR-000185,PRD-001,PT-000051,Clinical Trial,Subcutaneous,False,True
+SR-000186,PRD-009,PT-000448,Literature,Topical,False,True
+SR-000187,PRD-003,PT-000432,Spontaneous,Oral,False,True
+SR-000188,PRD-004,PT-000384,Clinical Trial,Subcutaneous,False,True
+SR-000189,PRD-010,PT-000249,Clinical Trial,Subcutaneous,True,True
+SR-000190,PRD-013,PT-000255,Literature,IV,False,True
+SR-000191,PRD-001,PT-000215,Spontaneous,Topical,False,True
+SR-000192,PRD-003,PT-000015,Literature,Oral,False,True
+SR-000193,PRD-005,PT-000251,Spontaneous,IV,False,True
+SR-000194,PRD-015,PT-000119,Clinical Trial,Oral,False,True
+SR-000195,PRD-001,PT-000101,Clinical Trial,Topical,False,True
+SR-000196,PRD-003,PT-000028,Clinical Trial,Topical,False,True
+SR-000197,PRD-007,PT-000229,Spontaneous,Topical,False,True
+SR-000198,PRD-005,PT-000024,Clinical Trial,Topical,False,True
+SR-000199,PRD-001,PT-000425,Spontaneous,Subcutaneous,True,True
+SR-000200,PRD-009,PT-000445,Spontaneous,Oral,True,True
+SR-000201,PRD-010,PT-000401,Clinical Trial,Oral,False,True
+SR-000202,PRD-003,PT-000151,Clinical Trial,Oral,False,True
+SR-000203,PRD-011,PT-000082,Spontaneous,Subcutaneous,False,True
+SR-000204,PRD-001,PT-000253,Clinical Trial,Oral,False,True
+SR-000205,PRD-011,PT-000337,Spontaneous,Oral,True,True
+SR-000206,PRD-004,PT-000011,Clinical Trial,Oral,False,True
+SR-000207,PRD-004,PT-000429,Clinical Trial,Subcutaneous,False,True
+SR-000208,PRD-003,PT-000220,Clinical Trial,Topical,False,True
+SR-000209,PRD-014,PT-000410,Clinical Trial,Subcutaneous,False,True
+SR-000210,PRD-008,PT-000039,Clinical Trial,Oral,False,True
+SR-000211,PRD-011,PT-000213,Spontaneous,IV,False,True
+SR-000212,PRD-004,PT-000230,Clinical Trial,Topical,True,True
+SR-000213,PRD-001,PT-000025,Spontaneous,Oral,False,True
+SR-000214,PRD-001,PT-000354,Spontaneous,Subcutaneous,False,True
+SR-000215,PRD-007,PT-000466,Clinical Trial,Subcutaneous,False,True
+SR-000216,PRD-005,PT-000271,Spontaneous,Oral,False,True
+SR-000217,PRD-012,PT-000198,Spontaneous,Subcutaneous,False,True
+SR-000218,PRD-012,PT-000319,Literature,IV,True,True
+SR-000219,PRD-005,PT-000181,Spontaneous,IV,True,True
+SR-000220,PRD-007,PT-000180,Spontaneous,Subcutaneous,False,True
+SR-000221,PRD-006,PT-000380,Spontaneous,Topical,True,True
+SR-000222,PRD-011,PT-000296,Spontaneous,Oral,False,True
+SR-000223,PRD-010,PT-000132,Clinical Trial,Subcutaneous,False,True
+SR-000224,PRD-010,PT-000204,Clinical Trial,Topical,False,True
+SR-000225,PRD-001,PT-000418,Clinical Trial,Oral,True,True
+SR-000226,PRD-006,PT-000265,Spontaneous,Topical,False,True
+SR-000227,PRD-015,PT-000039,Clinical Trial,Topical,False,True
+SR-000228,PRD-006,PT-000429,Spontaneous,IV,False,True
+SR-000229,PRD-003,PT-000371,Clinical Trial,IV,False,True
+SR-000230,PRD-003,PT-000134,Clinical Trial,Subcutaneous,False,True
+SR-000231,PRD-001,PT-000483,Spontaneous,Oral,True,True
+SR-000232,PRD-012,PT-000476,Clinical Trial,Topical,False,True
+SR-000233,PRD-001,PT-000498,Clinical Trial,Subcutaneous,False,True
+SR-000234,PRD-009,PT-000189,Spontaneous,Subcutaneous,False,True
+SR-000235,PRD-006,PT-000462,Clinical Trial,IV,True,True
+SR-000236,PRD-002,PT-000404,Clinical Trial,IV,False,True
+SR-000237,PRD-014,PT-000436,Spontaneous,Subcutaneous,False,True
+SR-000238,PRD-012,PT-000274,Spontaneous,IV,False,True
+SR-000239,PRD-013,PT-000140,Clinical Trial,Topical,False,True
+SR-000240,PRD-015,PT-000114,Literature,Topical,True,True
+SR-000241,PRD-014,PT-000484,Clinical Trial,Topical,True,True
+SR-000242,PRD-011,PT-000252,Clinical Trial,Topical,False,True
+SR-000243,PRD-009,PT-000464,Clinical Trial,IV,False,True
+SR-000244,PRD-011,PT-000278,Spontaneous,IV,False,True
+SR-000245,PRD-007,PT-000268,Spontaneous,IV,True,True
+SR-000246,PRD-003,PT-000037,Spontaneous,Topical,False,True
+SR-000247,PRD-006,PT-000202,Literature,Subcutaneous,True,True
+SR-000248,PRD-008,PT-000279,Clinical Trial,Topical,True,True
+SR-000249,PRD-001,PT-000055,Literature,Topical,False,True
+SR-000250,PRD-013,PT-000082,Spontaneous,IV,False,True
+SR-000251,PRD-014,PT-000296,Clinical Trial,Subcutaneous,False,True
+SR-000252,PRD-007,PT-000125,Clinical Trial,IV,False,True
+SR-000253,PRD-008,PT-000351,Spontaneous,IV,False,True
+SR-000254,PRD-013,PT-000231,Spontaneous,Oral,False,True
+SR-000255,PRD-007,PT-000202,Clinical Trial,IV,True,True
+SR-000256,PRD-011,PT-000059,Clinical Trial,Topical,False,True
+SR-000257,PRD-008,PT-000204,Clinical Trial,Oral,False,True
+SR-000258,PRD-005,PT-000272,Spontaneous,Oral,False,True
+SR-000259,PRD-012,PT-000287,Clinical Trial,Subcutaneous,False,True
+SR-000260,PRD-003,PT-000136,Spontaneous,Subcutaneous,False,True
+SR-000261,PRD-004,PT-000014,Spontaneous,IV,False,True
+SR-000262,PRD-011,PT-000468,Clinical Trial,IV,False,True
+SR-000263,PRD-011,PT-000479,Spontaneous,Topical,True,True
+SR-000264,PRD-015,PT-000453,Literature,Subcutaneous,False,True
+SR-000265,PRD-011,PT-000145,Spontaneous,IV,False,True
+SR-000266,PRD-001,PT-000302,Spontaneous,Oral,False,True
+SR-000267,PRD-013,PT-000071,Spontaneous,IV,False,True
+SR-000268,PRD-007,PT-000453,Clinical Trial,IV,False,True
+SR-000269,PRD-001,PT-000003,Spontaneous,Topical,True,True
+SR-000270,PRD-009,PT-000236,Spontaneous,Oral,True,True
+SR-000271,PRD-003,PT-000429,Spontaneous,Topical,True,True
+SR-000272,PRD-007,PT-000363,Spontaneous,Oral,True,True
+SR-000273,PRD-008,PT-000432,Clinical Trial,Subcutaneous,False,True
+SR-000274,PRD-002,PT-000249,Spontaneous,Topical,False,True
+SR-000275,PRD-013,PT-000048,Spontaneous,Oral,True,True
+SR-000276,PRD-008,PT-000004,Clinical Trial,Subcutaneous,False,True
+SR-000277,PRD-015,PT-000077,Spontaneous,Topical,True,True
+SR-000278,PRD-007,PT-000029,Clinical Trial,Topical,False,True
+SR-000279,PRD-009,PT-000224,Spontaneous,Oral,False,True
+SR-000280,PRD-013,PT-000026,Clinical Trial,Oral,True,True
+SR-000281,PRD-004,PT-000093,Spontaneous,Subcutaneous,False,True
+SR-000282,PRD-014,PT-000210,Spontaneous,IV,False,True
+SR-000283,PRD-003,PT-000368,Spontaneous,Topical,False,True
+SR-000284,PRD-015,PT-000338,Literature,Subcutaneous,False,True
+SR-000285,PRD-010,PT-000030,Spontaneous,IV,False,True
+SR-000286,PRD-008,PT-000452,Literature,IV,False,True
+SR-000287,PRD-004,PT-000275,Literature,Subcutaneous,False,True
+SR-000288,PRD-009,PT-000175,Spontaneous,Oral,True,True
+SR-000289,PRD-009,PT-000192,Spontaneous,IV,True,True
+SR-000290,PRD-015,PT-000425,Spontaneous,Subcutaneous,False,True
+SR-000291,PRD-013,PT-000233,Literature,Oral,False,True
+SR-000292,PRD-008,PT-000123,Clinical Trial,IV,True,True
+SR-000293,PRD-006,PT-000213,Clinical Trial,IV,False,True
+SR-000294,PRD-006,PT-000035,Spontaneous,Oral,False,True
+SR-000295,PRD-006,PT-000077,Clinical Trial,Oral,True,True
+SR-000296,PRD-001,PT-000158,Spontaneous,IV,True,True
+SR-000297,PRD-001,PT-000111,Spontaneous,Subcutaneous,False,True
+SR-000298,PRD-012,PT-000175,Spontaneous,Oral,False,True
+SR-000299,PRD-004,PT-000033,Spontaneous,Topical,False,True
+SR-000300,PRD-007,PT-000306,Literature,IV,False,True

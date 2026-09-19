@@ -1,0 +1,7 @@
+timestamp_utc,username,role,action
+2026-09-05T05:13:45.971012+00:00,meena2vj@gmail.com,unauthenticated,failed_login
+2026-09-05T05:13:50.111924+00:00,meena2vj@gmail.com,unauthenticated,failed_login
+2026-09-05T05:14:14.921760+00:00,uguser1pel10,unauthenticated,failed_login
+2026-09-05T05:32:58.797989+00:00,admin,admin,login
+2026-09-05T05:32:58.950747+00:00,admin,admin,view:Overview
+2026-09-05T05:33:06.357887+00:00,admin,admin,view:Patients
