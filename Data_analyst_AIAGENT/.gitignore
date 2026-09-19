@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+data/uploads/*
+!data/uploads/.gitkeep
+data/business_context/*
+!data/business_context/.gitkeep
+data/db/*
+!data/db/.gitkeep
+reports/generated/*
+!reports/generated/.gitkeep
+*.sqlite
+*.sqlite3
+.streamlit/secrets.toml
