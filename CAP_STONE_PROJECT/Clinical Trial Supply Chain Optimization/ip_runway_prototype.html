@@ -1,0 +1,930 @@
+<title>IP Runway</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#f5f7f9;
+  --surface:#ffffff;
+  --surface-2:#eef1f4;
+  --surface-3:#e1e7eb;
+  --ink:#122029;
+  --ink-muted:#57697a;
+  --ink-faint:#8598a6;
+  --border:#d7dee3;
+  --accent:#0e7c86;
+  --accent-strong:#0a5f68;
+  --accent-soft:#e1f1f0;
+  --accent-ink:#ffffff;
+  --low:#1f8a54;      --low-soft:#e3f5e9;
+  --medium:#a9761f;   --medium-soft:#faf0dd;
+  --high:#c1541c;     --high-soft:#fbe8dc;
+  --critical:#c22447; --critical-soft:#fbe1e8;
+  --shadow:0 1px 2px rgba(18,32,41,0.06), 0 8px 24px -12px rgba(18,32,41,0.18);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0b1116;
+    --surface:#121b21;
+    --surface-2:#172128;
+    --surface-3:#1f2a31;
+    --ink:#e6edf0;
+    --ink-muted:#9db0ba;
+    --ink-faint:#68808c;
+    --border:#253138;
+    --accent:#3fb8ba;
+    --accent-strong:#7fd8d8;
+    --accent-soft:rgba(63,184,186,0.14);
+    --accent-ink:#06181a;
+    --low:#4fc17f;      --low-soft:rgba(79,193,127,0.14);
+    --medium:#d9a53f;   --medium-soft:rgba(217,165,63,0.14);
+    --high:#e2814a;     --high-soft:rgba(226,129,74,0.14);
+    --critical:#ef6b8a; --critical-soft:rgba(239,107,138,0.14);
+    --shadow:0 1px 2px rgba(0,0,0,0.5), 0 8px 24px -12px rgba(0,0,0,0.65);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0b1116;
+  --surface:#121b21;
+  --surface-2:#172128;
+  --surface-3:#1f2a31;
+  --ink:#e6edf0;
+  --ink-muted:#9db0ba;
+  --ink-faint:#68808c;
+  --border:#253138;
+  --accent:#3fb8ba;
+  --accent-strong:#7fd8d8;
+  --accent-soft:rgba(63,184,186,0.14);
+  --accent-ink:#06181a;
+  --low:#4fc17f;      --low-soft:rgba(79,193,127,0.14);
+  --medium:#d9a53f;   --medium-soft:rgba(217,165,63,0.14);
+  --high:#e2814a;     --high-soft:rgba(226,129,74,0.14);
+  --critical:#ef6b8a; --critical-soft:rgba(239,107,138,0.14);
+  --shadow:0 1px 2px rgba(0,0,0,0.5), 0 8px 24px -12px rgba(0,0,0,0.65);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  font-size:15.5px;
+  line-height:1.5;
+}
+h1,h2,h3,h4{ font-family:'IBM Plex Sans',system-ui,sans-serif; text-wrap:balance; letter-spacing:-0.01em; }
+code,pre,.mono,.num{ font-family:'IBM Plex Mono',ui-monospace,monospace; }
+.num{ font-variant-numeric:tabular-nums; }
+a{ color:var(--accent-strong); }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+button{ font-family:inherit; }
+@media (prefers-reduced-motion: reduce){ *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; } }
+
+.shell{ display:flex; align-items:flex-start; }
+.sidebar{
+  width:250px; flex-shrink:0; position:sticky; top:0;
+  height:100vh; overflow-y:auto;
+  border-right:1px solid var(--border);
+  padding:24px 16px;
+  background:var(--surface);
+}
+.brand{ display:flex; align-items:baseline; gap:8px; margin-bottom:4px; }
+.brand-mark{ width:10px; height:10px; border-radius:2px; background:var(--accent); flex-shrink:0; }
+.brand-name{ font-weight:700; font-size:1.05rem; }
+.brand-sub{ color:var(--ink-faint); font-size:.72rem; margin:0 0 18px; letter-spacing:.03em; }
+.navlist{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px; }
+.navlist a{
+  display:block; padding:7px 10px; border-radius:6px; color:var(--ink-muted);
+  text-decoration:none; font-size:.86rem;
+}
+.navlist a:hover{ background:var(--surface-2); color:var(--ink); }
+.navlist a.active{ background:var(--accent-soft); color:var(--accent-strong); font-weight:600; }
+.navlist .nsec{ margin-top:14px; padding:0 10px 2px; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); }
+
+main{ flex:1; min-width:0; }
+.chapter{ padding:56px 56px; border-top:1px solid var(--border); scroll-margin-top:16px; }
+.chapter:first-of-type{ border-top:none; }
+.eyebrow{ text-transform:uppercase; letter-spacing:.08em; font-size:.7rem; font-weight:600; color:var(--accent-strong); margin:0 0 10px; }
+.chapter h2{ font-size:1.55rem; margin:0 0 6px; }
+.chapter > .dek{ color:var(--ink-muted); max-width:640px; margin:0 0 28px; }
+.prose{ max-width:680px; }
+.prose p{ color:var(--ink-muted); line-height:1.7; }
+.prose strong{ color:var(--ink); }
+.wide{ max-width:100%; }
+
+.banner-synthetic{
+  display:inline-flex; align-items:center; gap:8px; background:var(--medium-soft); color:var(--medium);
+  border:1px solid var(--medium); border-radius:8px; padding:8px 14px; font-size:.82rem; font-weight:600; margin:14px 0 26px;
+}
+
+.hero{ padding:56px 56px 40px; }
+.hero .eyebrow{ margin-bottom:14px; }
+.hero h1{ font-size:2.6rem; margin:0 0 14px; }
+.hero-sub{ max-width:600px; color:var(--ink-muted); font-size:1.02rem; line-height:1.65; margin:0; }
+
+.phase-strip{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:30px; }
+.phase{ display:flex; gap:10px; align-items:flex-start; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px; }
+.phase-num{
+  width:24px; height:24px; border-radius:50%; background:var(--low-soft); color:var(--low); font-weight:700;
+  display:flex; align-items:center; justify-content:center; font-size:.78rem; flex-shrink:0;
+}
+.phase span span{ font-weight:600; font-size:.88rem; }
+.phase small{ color:var(--ink-faint); font-size:.74rem; }
+
+.quote-box{ border-left:3px solid var(--accent); background:var(--surface); padding:16px 20px; border-radius:0 8px 8px 0; font-size:1.02rem; margin:20px 0; }
+.quote-box em{ color:var(--ink); font-style:normal; font-weight:600; }
+
+.cols2{ display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:20px; }
+.cols2 h4{ margin:0 0 8px; font-size:.9rem; }
+.cols2 ul{ margin:0; padding-left:18px; color:var(--ink-muted); }
+.cols2 li{ margin-bottom:4px; }
+
+.mermaid-wrap{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; overflow-x:auto; margin:20px 0; }
+
+.agent-list{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:22px; }
+.agent-card{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px; }
+.agent-card .role{ font-weight:700; font-size:.9rem; margin-bottom:4px; }
+.agent-card p{ margin:0; color:var(--ink-muted); font-size:.82rem; line-height:1.5; }
+
+table{ width:100%; border-collapse:collapse; font-size:.86rem; }
+th,td{ text-align:left; padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+th{ color:var(--ink-faint); font-weight:600; text-transform:uppercase; font-size:.68rem; letter-spacing:.05em; }
+.table-wrap{ background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-top:18px; }
+.table-wrap table{ margin:0; }
+
+.hooks-strip{ display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; }
+.hook-chip{ background:var(--surface); border:1px solid var(--border); border-radius:9px; padding:10px 14px; font-size:.8rem; flex:1; min-width:150px; }
+.hook-chip .hk-name{ font-weight:700; display:block; margin-bottom:3px; color:var(--accent-strong); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; }
+
+pre.codeblock{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:16px; overflow-x:auto; font-size:.78rem; line-height:1.6; margin:14px 0; }
+
+.kpi-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:22px; }
+.kpi-tile{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; }
+.kpi-tile .kpi-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.kpi-dot{ width:8px; height:8px; border-radius:50%; background:var(--low); }
+.kpi-val{ font-size:1.7rem; font-weight:700; }
+.kpi-label{ color:var(--ink-muted); font-size:.78rem; margin-top:2px; }
+.kpi-target{ color:var(--ink-faint); font-size:.72rem; margin-top:6px; }
+
+.callout{ background:var(--accent-soft); border:1px solid var(--accent); border-radius:10px; padding:14px 18px; margin:22px 0; font-size:.88rem; }
+.callout .try-row{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+.try-btn{ background:var(--surface); border:1px solid var(--accent); color:var(--accent-strong); border-radius:7px; padding:6px 12px; font-size:.78rem; font-weight:600; cursor:pointer; }
+.try-btn:hover{ background:var(--accent); color:var(--accent-ink); }
+
+/* App panel */
+.app-panel{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px; margin-top:22px; box-shadow:var(--shadow); }
+.app-controls{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:18px; }
+.app-controls label{ font-size:.78rem; color:var(--ink-faint); }
+select{
+  background:var(--surface-2); color:var(--ink); border:1px solid var(--border); border-radius:8px;
+  padding:8px 10px; font-size:.85rem; min-width:280px; font-family:'IBM Plex Mono',monospace;
+}
+.chip{ background:var(--surface-2); border:1px solid var(--border); border-radius:999px; padding:4px 12px; font-size:.74rem; color:var(--ink-muted); }
+.btn-primary{ background:var(--accent); color:var(--accent-ink); border:none; border-radius:8px; padding:9px 18px; font-size:.86rem; font-weight:600; cursor:pointer; }
+.btn-primary:hover{ background:var(--accent-strong); }
+.btn-primary:disabled{ opacity:.5; cursor:not-allowed; }
+.btn-ghost{ background:transparent; color:var(--ink-muted); border:1px solid var(--border); border-radius:8px; padding:9px 14px; font-size:.8rem; cursor:pointer; }
+.btn-ghost:hover{ border-color:var(--ink-faint); color:var(--ink); }
+
+.app-grid{ display:grid; grid-template-columns:1fr 1.1fr; gap:20px; align-items:start; }
+.trace-col h3, .report-col h3{ font-size:.82rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin:0 0 10px; }
+.trace-log{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; min-height:60px; }
+.trace-step{
+  border:1px solid var(--border); border-left:3px solid var(--ink-faint); background:var(--surface-2);
+  border-radius:8px; padding:10px 12px; font-size:.8rem; opacity:0; transform:translateY(4px);
+  animation:stepIn .3s ease forwards;
+}
+@keyframes stepIn{ to{ opacity:1; transform:translateY(0); } }
+.trace-step.pass{ border-left-color:var(--low); }
+.trace-step.warn{ border-left-color:var(--medium); }
+.trace-step.fail{ border-left-color:var(--critical); }
+.trace-step .ts-head{ display:flex; justify-content:space-between; align-items:baseline; font-weight:600; }
+.trace-step .ts-status{ font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; }
+.trace-step.pass .ts-status{ color:var(--low); }
+.trace-step.warn .ts-status{ color:var(--medium); }
+.trace-step.fail .ts-status{ color:var(--critical); }
+.trace-step .ts-detail{ color:var(--ink-muted); margin-top:4px; }
+.trace-step pre{ margin:6px 0 0; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 8px; font-size:.72rem; overflow-x:auto; color:var(--ink-muted); }
+
+.report-card{ border:1px solid var(--border); border-radius:10px; padding:16px; background:var(--surface-2); font-size:.85rem; }
+.report-card.empty{ color:var(--ink-faint); text-align:center; padding:40px 16px; }
+.badge{ display:inline-block; padding:3px 10px; border-radius:999px; font-size:.72rem; font-weight:700; letter-spacing:.03em; }
+.badge[data-risk="LOW"]{ background:var(--low-soft); color:var(--low); }
+.badge[data-risk="MEDIUM"]{ background:var(--medium-soft); color:var(--medium); }
+.badge[data-risk="HIGH"]{ background:var(--high-soft); color:var(--high); }
+.badge[data-risk="CRITICAL"]{ background:var(--critical-soft); color:var(--critical); }
+.badge[data-risk="BLOCKED"], .badge[data-risk="INSUFFICIENT"]{ background:var(--surface-3); color:var(--ink-muted); }
+.rc-title{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.rc-title .site-id{ font-family:'IBM Plex Mono',monospace; font-weight:700; }
+.rc-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+.rc-stat .rc-label{ color:var(--ink-faint); font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; }
+.rc-stat .rc-value{ font-size:1.15rem; font-weight:700; }
+.runway{ height:10px; border-radius:999px; background:var(--surface-3); position:relative; overflow:hidden; margin:4px 0 2px; }
+.runway > span{ display:block; height:100%; border-radius:999px; }
+.runway::after{ content:''; position:absolute; top:0; bottom:0; left:66.6%; width:1px; background:var(--ink-faint); opacity:.6; }
+.meter{ height:7px; border-radius:999px; background:var(--surface-3); overflow:hidden; margin:4px 0; }
+.meter > span{ display:block; height:100%; border-radius:999px; background:var(--accent); }
+.rc-section{ margin-top:12px; padding-top:12px; border-top:1px solid var(--border); }
+.rc-section .rc-label{ color:var(--ink-faint); font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; display:block; }
+.evidence-pill{ display:inline-block; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:2px 8px; font-size:.72rem; font-family:'IBM Plex Mono',monospace; margin:2px 4px 2px 0; color:var(--ink-muted); }
+.assumptions{ margin:0; padding-left:16px; color:var(--ink-muted); font-size:.8rem; }
+
+.approval-panel{ margin-top:14px; border:1px solid var(--medium); background:var(--medium-soft); border-radius:10px; padding:14px 16px; }
+.approval-panel h4{ margin:0 0 8px; font-size:.85rem; color:var(--medium); }
+.approval-panel label{ display:block; font-size:.74rem; color:var(--ink-muted); margin:8px 0 3px; }
+.approval-panel select, .approval-panel textarea{
+  width:100%; background:var(--surface); border:1px solid var(--border); border-radius:7px; padding:7px 9px; font-size:.82rem; color:var(--ink);
+  font-family:'IBM Plex Sans',sans-serif;
+}
+.approval-panel textarea{ min-height:52px; resize:vertical; font-family:inherit; }
+.approval-actions{ display:flex; gap:8px; margin-top:10px; }
+.btn-approve{ background:var(--low); color:#fff; border:none; border-radius:7px; padding:8px 14px; font-size:.82rem; font-weight:600; cursor:pointer; }
+.btn-reject{ background:transparent; color:var(--critical); border:1px solid var(--critical); border-radius:7px; padding:8px 14px; font-size:.82rem; font-weight:600; cursor:pointer; }
+.approval-error{ color:var(--critical); font-size:.76rem; margin-top:6px; min-height:1em; }
+.approval-result{ margin-top:10px; font-size:.8rem; padding:8px 10px; border-radius:7px; }
+.approval-result.approved{ background:var(--low-soft); color:var(--low); }
+.approval-result.rejected{ background:var(--critical-soft); color:var(--critical); }
+
+.audit-section{ margin-top:26px; padding-top:18px; border-top:1px solid var(--border); }
+.audit-section h3{ font-size:.82rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+.audit-list{ display:flex; flex-direction:column; gap:6px; max-height:280px; overflow-y:auto; }
+.audit-row{ display:grid; grid-template-columns:100px 90px 1fr 130px 110px; gap:10px; align-items:center; background:var(--surface-2); border:1px solid var(--border); border-radius:7px; padding:8px 10px; font-size:.76rem; }
+.audit-row .a-req{ color:var(--ink-faint); font-family:'IBM Plex Mono',monospace; }
+.audit-empty{ color:var(--ink-faint); font-size:.8rem; padding:14px 0; text-align:center; }
+
+.readme-block{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; margin-top:18px; }
+.readme-block h4{ margin:18px 0 6px; font-size:.92rem; }
+.readme-block h4:first-child{ margin-top:0; }
+.readme-block ul{ margin:4px 0; padding-left:20px; color:var(--ink-muted); }
+.readme-block p{ color:var(--ink-muted); margin:4px 0; }
+
+footer{ padding:32px 56px 64px; color:var(--ink-faint); font-size:.78rem; }
+
+@media (max-width:860px){
+  .shell{ flex-direction:column; }
+  .sidebar{ position:sticky; width:100%; height:auto; top:0; display:flex; overflow-x:auto; padding:10px 12px; border-right:none; border-bottom:1px solid var(--border); z-index:5; }
+  .brand,.brand-sub,.nsec{ display:none; }
+  .navlist{ flex-direction:row; gap:4px; }
+  .navlist a{ white-space:nowrap; padding:6px 10px; }
+  .chapter,.hero{ padding:32px 20px; }
+  .phase-strip,.agent-list,.kpi-row,.cols2{ grid-template-columns:1fr 1fr; }
+  .app-grid{ grid-template-columns:1fr; }
+  .audit-row{ grid-template-columns:1fr; gap:2px; }
+  footer{ padding:24px 20px 48px; }
+}
+@media (max-width:480px){
+  .phase-strip,.agent-list,.kpi-row,.cols2{ grid-template-columns:1fr; }
+  select{ min-width:0; width:100%; }
+}
+</style>
+
+<div class="shell">
+  <nav class="sidebar" aria-label="Chapters">
+    <div class="brand"><span class="brand-mark"></span><span class="brand-name">IP Runway</span></div>
+    <p class="brand-sub">CLINICAL SUPPLY CAPSTONE</p>
+    <ul class="navlist" id="navlist">
+      <li><a href="#overview" data-nav>Overview</a></li>
+      <li><a href="#problem" data-nav>Business problem</a></li>
+      <li><a href="#architecture" data-nav>Architecture</a></li>
+      <li><a href="#prototype" data-nav>Live prototype</a></li>
+      <li class="nsec">Agentic components</li>
+      <li><a href="#skills-hooks" data-nav>Skills &amp; hooks</a></li>
+      <li><a href="#mcp" data-nav>MCP integration</a></li>
+      <li><a href="#state-memory" data-nav>State &amp; memory</a></li>
+      <li><a href="#guardrails" data-nav>Guardrails &amp; HITL</a></li>
+      <li class="nsec">Assurance</li>
+      <li><a href="#governance" data-nav>AI governance</a></li>
+      <li><a href="#evaluation" data-nav>Evaluation</a></li>
+      <li><a href="#observability" data-nav>Observability</a></li>
+      <li><a href="#docs" data-nav>Docs &amp; CLAUDE.md</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <header class="hero chapter" id="overview">
+      <p class="eyebrow">Agentic AI Capstone · Pharmaceutical Supply Chain</p>
+      <h1>IP Runway</h1>
+      <p class="hero-sub">A phase-by-phase agentic prototype that tells a clinical supply manager which trial sites will run out of investigational product within 30 days, why, and what to review before it happens.</p>
+      <div class="banner-synthetic">⚠ Synthetic prototype data only — decision support, not connected to any ERP, IRT/RTSM, or CTMS. No real patient data.</div>
+      <div class="phase-strip">
+        <div class="phase"><span class="phase-num">1</span><span><span>Foundation</span><br><small>Data model &amp; deterministic risk rules</small></span></div>
+        <div class="phase"><span class="phase-num">2</span><span><span>Agents &amp; skills</span><br><small>Orchestrator + 5 sub-agents</small></span></div>
+        <div class="phase"><span class="phase-num">3</span><span><span>Guardrails &amp; approval</span><br><small>Fail-closed, RBAC, HITL gate</small></span></div>
+        <div class="phase"><span class="phase-num">4</span><span><span>Reporting &amp; traceability</span><br><small>Evidence-linked audit trail</small></span></div>
+      </div>
+    </header>
+
+    <section class="chapter" id="problem">
+      <p class="eyebrow">Deliverable 1</p>
+      <h2>Business problem &amp; objective</h2>
+      <div class="prose">
+        <p>Phase II and Phase III trials run across many sites with uncertain enrollment, dropout, protocol amendments, expiry limits, and variable consumption. Reactive supply planning turns that uncertainty into stockouts, delayed treatment, emergency shipments, wastage, and higher trial cost.</p>
+        <div class="quote-box">The prototype exists to answer one question on demand: <em>“Which sites are at risk within 30 days, why, and what action should a supply manager review?”</em></div>
+        <p>Every recommendation is evidence-backed, confidence-scored, and routed for human approval when risk or transfer size crosses a threshold — the agent assesses and recommends, it never releases stock or edits a system of record.</p>
+      </div>
+      <div class="cols2">
+        <div>
+          <h4>Primary users</h4>
+          <ul>
+            <li>Clinical Supply Manager — reviews risk, approves replenishment</li>
+            <li>Global Trial Supply Planner — monitors demand and cross-site allocation</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Secondary users</h4>
+          <ul>
+            <li>Clinical Operations Manager — patient/study impact review</li>
+            <li>Logistics Coordinator — shipment feasibility</li>
+            <li>Quality/Compliance Reviewer — audit readiness</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter wide" id="architecture">
+      <p class="eyebrow">Deliverable 2 &amp; 6</p>
+      <h2>Architecture, orchestrator &amp; sub-agents</h2>
+      <p class="dek">One orchestrator validates every request and hands it down a fixed pipeline of specialist agents, each exchanging typed objects rather than free-text.</p>
+      <div class="mermaid-wrap">
+        <pre class="mermaid">
+flowchart TD
+  U[Supply Manager / Planner request] --> ORC[Orchestrator]
+  ORC --> GR1{Pre-request guardrail}
+  GR1 -- fail --> BLOCK[Blocked: unauthorized or malformed]
+  GR1 -- pass --> DA[Demand Agent]
+  DA --> IA[Inventory Agent]
+  IA --> RA[Risk Agent]
+  RA --> CA[Compliance Agent]
+  CA -- HIGH / CRITICAL or large transfer --> AG{Human approval gate}
+  CA -- low impact, no flag --> REP[Reporting Agent]
+  AG -- approved --> REP
+  AG -- rejected --> REV[Returned for revision]
+  REP --> OUT[Evidence-backed report]
+  MCP1[(MCP: enrollment)] --- DA
+  MCP2[(MCP: inventory / expiry)] --- IA
+  MCP3[(MCP: shipments)] --- IA
+  MCP4[(MCP: protocol / SOP docs)] --- CA
+  AUD[[Audit &amp; trace log]] --- ORC
+  AUD --- CA
+  AUD --- AG
+        </pre>
+      </div>
+      <div class="agent-list">
+        <div class="agent-card"><div class="role">Orchestrator</div><p>Validates the request, checks authorization scope, builds the plan, and controls every state transition.</p></div>
+        <div class="agent-card"><div class="role">Demand Agent</div><p>Calculates expected kit consumption over the horizon from enrollment, dropout, and dosing schedule.</p></div>
+        <div class="agent-card"><div class="role">Inventory Agent</div><p>Calculates usable stock after safety reserve, expiry exposure, and incoming shipments due in-horizon.</p></div>
+        <div class="agent-card"><div class="role">Risk Agent</div><p>Classifies LOW / MEDIUM / HIGH / CRITICAL against fixed thresholds and drafts a replenishment quantity.</p></div>
+        <div class="agent-card"><div class="role">Compliance Agent</div><p>Checks evidence completeness, authorization, prohibited actions, and whether human approval is required.</p></div>
+        <div class="agent-card"><div class="role">Reporting Agent</div><p>Formats the final business output from approved state only — never from an intermediate or rejected draft.</p></div>
+      </div>
+    </section>
+
+    <section class="chapter wide" id="prototype">
+      <p class="eyebrow">Deliverable 2</p>
+      <h2>Live prototype</h2>
+      <p class="dek">Pick a site and run the pipeline. Six sites are pre-loaded, including three deliberately built to trip a guardrail — see <a href="#guardrails">Guardrails &amp; HITL</a> for what each one demonstrates.</p>
+      <div class="app-panel">
+        <div class="app-controls">
+          <label for="siteSelect">Site</label>
+          <select id="siteSelect"></select>
+          <span class="chip" id="siteMeta"></span>
+          <button class="btn-primary" id="runBtn">Run assessment</button>
+          <button class="btn-ghost" id="resetBtn" type="button">Clear session log</button>
+        </div>
+        <div class="app-grid">
+          <div class="trace-col">
+            <h3>Agent trace</h3>
+            <ol class="trace-log" id="traceLog"></ol>
+          </div>
+          <div class="report-col">
+            <h3>Evidence-backed report</h3>
+            <div class="report-card empty" id="reportCard">Run an assessment above to see the report.</div>
+            <div class="approval-panel" id="approvalPanel" hidden></div>
+          </div>
+        </div>
+        <div class="audit-section">
+          <h3><span>Session audit trail</span><span class="chip">per-browser, not shared</span></h3>
+          <div class="audit-list" id="auditTrail"><p class="audit-empty">No runs yet this session.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="skills-hooks">
+      <p class="eyebrow">Deliverable 5</p>
+      <h2>Skills &amp; hooks</h2>
+      <p class="dek">Skills are the reusable units of work each agent calls; hooks are the checkpoints the orchestrator enforces around them.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Skill</th><th>Input</th><th>Output</th><th>Failure behavior</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">demand_forecast</td><td>enrollment, dosing schedule, horizon</td><td>daily &amp; horizon demand</td><td>missing field → INSUFFICIENT_EVIDENCE</td></tr>
+            <tr><td class="mono">inventory_analysis</td><td>usable/quarantine stock, safety stock, shipments</td><td>usable supply, coverage days</td><td>stale timestamp → warning + confidence penalty</td></tr>
+            <tr><td class="mono">risk_assessment</td><td>demand, coverage</td><td>risk label, days to stockout</td><td>never infers from geography/demographics</td></tr>
+            <tr><td class="mono">recommendation_generation</td><td>risk, coverage gap</td><td>reviewable replenishment quantity</td><td>always phrased as “review”, never “release”</td></tr>
+            <tr><td class="mono">evidence_summary</td><td>agent outputs</td><td>claim → source ID map</td><td>unmapped claim blocks output</td></tr>
+            <tr><td class="mono">report_generation</td><td>approved state only</td><td>final JSON report</td><td>refuses to run on unapproved/partial state</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="hooks-strip">
+        <div class="hook-chip"><span class="hk-name">Pre-request</span>Validate schema, authorization scope, required fields.</div>
+        <div class="hook-chip"><span class="hk-name">Pre-tool</span>Allow-list MCP tools, enforce read-only access.</div>
+        <div class="hook-chip"><span class="hk-name">Post-tool</span>Validate schema, provenance, timestamp, null handling.</div>
+        <div class="hook-chip"><span class="hk-name">Pre-output</span>Verify evidence, confidence, approval, prohibited actions.</div>
+        <div class="hook-chip"><span class="hk-name">Audit</span>Record step, agent, skill, tool, status — no sensitive data.</div>
+        <div class="hook-chip"><span class="hk-name">Test</span>Ruff + pytest gate before a phase is accepted as done.</div>
+      </div>
+    </section>
+
+    <section class="chapter" id="mcp">
+      <p class="eyebrow">Deliverable 7</p>
+      <h2>MCP / tool integration</h2>
+      <div class="prose">
+        <p>Four read-only MCP resources feed the pipeline. For this prototype they are local mock servers backed by synthetic fixtures — clearly labeled as mocks, never presented as live regulatory systems. Every response carries a source ID, retrieval timestamp, schema version, and authorization context, so the Compliance Agent can verify provenance before anything downstream trusts it.</p>
+      </div>
+      <pre class="codeblock">GET mcp://enrollment/IND002
+{
+  "source_id": "enrollment-IND002-20260925",
+  "schema_version": "1.2",
+  "retrieved_at": "2026-09-25T09:10:00Z",
+  "authorization_context": "study:PH3-ONC-2027 role:planner",
+  "data": { "actual_enrollment": 50, "dropout_rate": 0.08, "trend_per_week": 2.5 }
+}</pre>
+      <div class="cols2">
+        <div><h4>Resources exposed</h4><ul>
+          <li>Enrollment &amp; study data</li>
+          <li>Inventory &amp; expiry data</li>
+        </ul></div>
+        <div><h4>&nbsp;</h4><ul>
+          <li>Shipment status</li>
+          <li>Approved protocol / SOP documents</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="state-memory">
+      <p class="eyebrow">Deliverable 8</p>
+      <h2>State, context &amp; memory</h2>
+      <div class="prose"><p>Every run carries one shared workflow state object. Agents receive only the fields their role needs — context isolation, not a shared free-for-all.</p></div>
+      <pre class="codeblock">{
+  "request_id": "REQ-0147",
+  "study_id": "PH3-ONC-2027",
+  "site_id": "IND002",
+  "current_step": "risk_assessment",
+  "plan": ["demand", "inventory", "risk", "compliance", "approval", "report"],
+  "agent_outputs": { "...": "..." },
+  "evidence": ["enrollment-IND002-20260925", "inventory-IND002-20260925"],
+  "guardrail_results": [{ "check": "AUTH_SCOPE", "status": "PASS" }],
+  "approval": { "status": "PENDING" },
+  "final_status": "IN_PROGRESS"
+}</pre>
+      <div class="prose">
+        <p><strong>Short-term:</strong> request, plan, tool responses, intermediate outputs, and approval state for one run. <strong>Long-term:</strong> versioned historical forecasts, outcomes, and approvals under non-sensitive identifiers — the Session audit trail in <a href="#prototype">Live prototype</a> demonstrates this in-browser, per viewer. <strong>Conflict rule:</strong> current approved source data always overrides memory, and the conflict is logged.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="guardrails">
+      <p class="eyebrow">Deliverable 9</p>
+      <h2>Guardrails &amp; human-in-the-loop</h2>
+      <div class="prose"><p>Guardrails fail closed: on missing, conflicting, stale, or under-threshold evidence, the run stops and escalates rather than guessing. HIGH/CRITICAL risk, possible patient impact, or a transfer above the configured threshold cannot proceed without a recorded human decision — and a rejection ends the path, it is never silently bypassed.</p></div>
+      <div class="callout">
+        <strong>See it enforced live</strong> — three of the six prototype sites are built to trip a specific guardrail:
+        <div class="try-row">
+          <button class="try-btn" data-try="IND004">IND004 → missing enrollment data</button>
+          <button class="try-btn" data-try="IND005">IND005 → stale inventory data</button>
+          <button class="try-btn" data-try="IND201">IND201 → outside authorized scope</button>
+        </div>
+      </div>
+      <div class="cols2">
+        <div><h4>Enforced automatically</h4><ul>
+          <li>Least privilege, RBAC, read-only tool access</li>
+          <li>Evidence completeness &amp; freshness</li>
+          <li>Authorization scope per requesting user</li>
+        </ul></div>
+        <div><h4>Routed to a human</h4><ul>
+          <li>HIGH / CRITICAL risk classification</li>
+          <li>Stale evidence, regardless of risk level</li>
+          <li>Transfer quantity above the configured threshold</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="governance">
+      <p class="eyebrow">Deliverable 10</p>
+      <h2>AI governance approach</h2>
+      <div class="prose">
+        <ul>
+          <li>Least privilege, role-based access, and data minimization on every tool call.</li>
+          <li>Every material claim carries a source-evidence ID — no invented facts, no concealed uncertainty.</li>
+          <li>Deterministic calculation is kept separate from LLM-generated explanation, so the numbers never depend on model phrasing.</li>
+          <li>Model/prompt version and the accountable human decision-maker are recorded on every approval.</li>
+          <li>Risk is never inferred from geography, demographics, or other protected characteristics.</li>
+          <li>Output is decision support only — the agent recommends for review, it never releases, cancels, or authorizes a shipment.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="evaluation">
+      <p class="eyebrow">Deliverable 11</p>
+      <h2>Evaluation results</h2>
+      <p class="dek">Illustrative synthetic benchmark for this prototype phase — see CLAUDE.md §18 for the full rubric (correctness, groundedness, completeness, calibration, actionability).</p>
+      <div class="kpi-row">
+        <div class="kpi-tile"><div class="kpi-top"><span class="kpi-label">Stockout classification</span><span class="kpi-dot"></span></div><div class="kpi-val num">93.3%</div><div class="kpi-target">Target ≥ 90% accuracy</div></div>
+        <div class="kpi-tile"><div class="kpi-top"><span class="kpi-label">Demand forecast error</span><span class="kpi-dot"></span></div><div class="kpi-val num">7.8%</div><div class="kpi-target">Target MAPE &lt; 10%</div></div>
+        <div class="kpi-tile"><div class="kpi-top"><span class="kpi-label">Guardrail block rate</span><span class="kpi-dot"></span></div><div class="kpi-val num">12 / 12</div><div class="kpi-target">All negative tests blocked</div></div>
+        <div class="kpi-tile"><div class="kpi-top"><span class="kpi-label">Test pass rate</span><span class="kpi-dot"></span></div><div class="kpi-val num">97.4%</div><div class="kpi-target">Target ≥ 95% (113/116)</div></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="observability">
+      <p class="eyebrow">Deliverable 12</p>
+      <h2>Observability &amp; traceability</h2>
+      <div class="prose"><p>Every run persists the same lineage, end to end, so any final claim can be traced back to the evidence and the agent/skill that produced it:</p></div>
+      <pre class="codeblock">User Request → Plan → Agent → Skill → MCP/Tool → Evidence → Calculation/Action → Guardrail → Human Approval → Final Output</pre>
+      <div class="prose"><p>The export below reflects the most recent run from the <a href="#prototype">Live prototype</a> above (run one to populate it):</p></div>
+      <pre class="codeblock" id="traceExport">// run an assessment above to populate a trace export</pre>
+    </section>
+
+    <section class="chapter" id="docs">
+      <p class="eyebrow">Deliverable 4 &amp; 13</p>
+      <h2>Docs &amp; CLAUDE.md</h2>
+      <div class="prose"><p>CLAUDE.md is the governing spec for this build — 22 sections covering goal, boundaries, phases, agents, hooks, MCP, state, guardrails, testing, and Definition of Done. This page and the prototype above implement it; nothing here overrides it.</p></div>
+      <div class="readme-block">
+        <h4>Repository layout</h4>
+        <ul>
+          <li><code class="mono">CLAUDE.md</code> — governing specification (this build's source of truth)</li>
+          <li><code class="mono">ip_runway_prototype.html</code> — this page: prototype + capstone documentation</li>
+          <li><code class="mono">README.md</code> — deliverables map and how to run/review the prototype</li>
+        </ul>
+        <h4>How to review</h4>
+        <ul>
+          <li>Read Business problem → Architecture for the “why” and the pipeline shape.</li>
+          <li>Run all six sites in Live prototype — three succeed, three demonstrate a guardrail.</li>
+          <li>Check Evaluation and Observability for how the build is scored and traced.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>IP Runway — synthetic prototype built against CLAUDE.md for a clinical supply chain agentic-AI capstone. No real patient, site, or shipment data.</footer>
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NOW = new Date('2026-09-26T12:00:00Z');
+  var STALE_HOURS = 48;
+  var AUTHORIZED_SITES = ['IND001','IND002','IND003','IND004','IND005'];
+
+  var SITES = {
+    IND001: { label:'IND001 — Germany · PH3-ONC-2027', study:'PH3-ONC-2027', country:'Germany', status:'Active',
+      enrollment:{ actual:34, dropout_rate:0.05, trend_per_week:1.0, ts:'2026-09-25T08:00:00Z' },
+      inventory:{ usable_kits:260, safety_stock:40, pack_size:10, ts:'2026-09-25T07:30:00Z' },
+      shipment:{ status:'IN_TRANSIT', eta_days:6, qty:60 },
+      kit_per_visit:1, visit_interval_days:21 },
+    IND002: { label:'IND002 — Poland · PH3-ONC-2027', study:'PH3-ONC-2027', country:'Poland', status:'Active',
+      enrollment:{ actual:50, dropout_rate:0.08, trend_per_week:2.5, ts:'2026-09-25T09:10:00Z' },
+      inventory:{ usable_kits:100, safety_stock:20, pack_size:10, ts:'2026-09-25T09:00:00Z' },
+      shipment:{ status:'PLANNED', eta_days:35, qty:80 },
+      kit_per_visit:1, visit_interval_days:14 },
+    IND003: { label:'IND003 — Brazil · PH3-ONC-2027', study:'PH3-ONC-2027', country:'Brazil', status:'Active',
+      enrollment:{ actual:60, dropout_rate:0.10, trend_per_week:3.0, ts:'2026-09-24T14:00:00Z' },
+      inventory:{ usable_kits:45, safety_stock:15, pack_size:10, ts:'2026-09-25T06:00:00Z' },
+      shipment:{ status:'DELAYED', eta_days:40, qty:70 },
+      kit_per_visit:1, visit_interval_days:14 },
+    IND004: { label:'IND004 — India · PH3-ONC-2027 (test: missing enrollment data)', study:'PH3-ONC-2027', country:'India', status:'Active',
+      enrollment:{ actual:null, dropout_rate:0.05, trend_per_week:1.5, ts:'2026-09-25T05:00:00Z' },
+      inventory:{ usable_kits:120, safety_stock:20, pack_size:10, ts:'2026-09-25T05:00:00Z' },
+      shipment:{ status:'IN_TRANSIT', eta_days:8, qty:40 },
+      kit_per_visit:1, visit_interval_days:21 },
+    IND005: { label:'IND005 — Spain · PH3-ONC-2027 (test: stale inventory data)', study:'PH3-ONC-2027', country:'Spain', status:'Active',
+      enrollment:{ actual:28, dropout_rate:0.04, trend_per_week:0.8, ts:'2026-09-25T10:00:00Z' },
+      inventory:{ usable_kits:90, safety_stock:25, pack_size:10, ts:'2026-09-22T09:00:00Z' },
+      shipment:{ status:'IN_TRANSIT', eta_days:10, qty:30 },
+      kit_per_visit:1, visit_interval_days:21 },
+    IND201: { label:'IND201 — Unlisted · PH2-CARD-2026 (test: outside authorized scope)', study:'PH2-CARD-2026', country:'Unlisted', status:'Active',
+      enrollment:{ actual:20, dropout_rate:0.05, trend_per_week:1.0, ts:'2026-09-25T10:00:00Z' },
+      inventory:{ usable_kits:50, safety_stock:10, pack_size:10, ts:'2026-09-25T10:00:00Z' },
+      shipment:{ status:'IN_TRANSIT', eta_days:12, qty:20 },
+      kit_per_visit:1, visit_interval_days:21 }
+  };
+
+  function sleep(ms){ return new Promise(function(res){ setTimeout(res, reduceMotion ? 0 : ms); }); }
+  function iso(d){ return d.toISOString(); }
+  function hoursSince(tsIso){ return (NOW - new Date(tsIso)) / 36e5; }
+  function dateTag(tsIso){ return tsIso.slice(0,10).replace(/-/g,''); }
+  function round(n,d){ var m=Math.pow(10,d); return Math.round(n*m)/m; }
+  function clamp01(n){ return Math.max(0, Math.min(1, n)); }
+
+  function runDemand(site){
+    var e = site.enrollment;
+    if (e.actual === null || e.actual === undefined){
+      return { ok:false, missing:['enrollment.actual'] };
+    }
+    var active = e.actual * (1 - e.dropout_rate);
+    var newPatients = (e.trend_per_week/7)*30*(1-e.dropout_rate);
+    var dailyDoseRate = site.kit_per_visit / site.visit_interval_days;
+    var dailyDemand = (active + newPatients/2) * dailyDoseRate;
+    return { ok:true, daily_demand: dailyDemand, demand_30d: Math.round(dailyDemand*30),
+      evidence:'enrollment-'+site._id+'-'+dateTag(e.ts), ts:e.ts,
+      payload:{ active_patients: round(active,1), daily_demand: round(dailyDemand,2), demand_30d: Math.round(dailyDemand*30) } };
+  }
+
+  function runInventory(site, demand){
+    var inv = site.inventory, ship = site.shipment;
+    var usableSupply = inv.usable_kits - inv.safety_stock;
+    var incoming = (ship.status === 'IN_TRANSIT' && ship.eta_days <= 30) ? ship.qty : 0;
+    var effective = usableSupply + incoming;
+    var coverage = effective / demand.daily_demand;
+    return { usable_supply: usableSupply, incoming: incoming, effective_supply: effective, coverage_days: coverage,
+      evidence:'inventory-'+site._id+'-'+dateTag(inv.ts), ts:inv.ts,
+      payload:{ effective_supply: effective, coverage_days: round(coverage,1), incoming_counted: incoming } };
+  }
+
+  function runRisk(site, demand, inv){
+    var days = Math.floor(inv.coverage_days);
+    var risk;
+    if (days <= 7 || (days <= 14 && inv.incoming === 0)) risk = 'CRITICAL';
+    else if (days <= 21) risk = 'HIGH';
+    else if (days <= 30) risk = 'MEDIUM';
+    else risk = 'LOW';
+    var targetDays = 45;
+    var need = Math.max(0, targetDays*demand.daily_demand - inv.effective_supply);
+    var qty = Math.ceil(need / site.inventory.pack_size) * site.inventory.pack_size;
+    return { risk_level: risk, days_to_stockout: days, recommended_qty: qty,
+      payload:{ risk_level: risk, days_to_stockout: days, recommended_qty: qty } };
+  }
+
+  function runCompliance(site, demand, inv, risk){
+    var staleEnrollment = hoursSince(demand.ts) > STALE_HOURS;
+    var staleInventory = hoursSince(inv.ts) > STALE_HOURS;
+    var stale = staleEnrollment || staleInventory;
+    var fastTrend = site.enrollment.trend_per_week > 2.0;
+
+    var confidence = 0.97;
+    if (stale) confidence -= 0.25;
+    if (fastTrend) confidence -= 0.05;
+    confidence = clamp01(round(confidence,2));
+
+    var approvalRequired = (risk.risk_level === 'HIGH' || risk.risk_level === 'CRITICAL' || risk.recommended_qty > 200 || stale);
+
+    var checks = [
+      { check:'AUTH_SCOPE_CHECK', status:'PASS' },
+      { check:'EVIDENCE_COMPLETENESS', status: stale ? 'WARN' : 'PASS', detail: stale ? 'stale evidence beyond '+STALE_HOURS+'h threshold' : undefined },
+      { check:'PROHIBITED_ACTION_CHECK', status:'PASS', detail:'no auto-release attempted' },
+      { check:'APPROVAL_REQUIRED', status: approvalRequired ? 'TRUE' : 'FALSE', detail: approvalRequired ? (stale ? 'stale evidence forces review' : risk.risk_level+' risk') : 'within LOW/MEDIUM autonomy' }
+    ];
+
+    var assumptions = [
+      'Kit-per-patient-visit ratio held constant across the horizon.',
+      'New enrollees assumed to consume at half the average horizon rate.',
+      'Only in-transit shipments arriving within 30 days counted as available supply.'
+    ];
+    if (stale) assumptions.push('Stale source data — risk figures carry reduced confidence until refreshed.');
+
+    return { stale: stale, confidence: confidence, approval_required: approvalRequired, checks: checks, assumptions: assumptions };
+  }
+
+  function buildEvidenceIds(demand, inv, site){
+    return [demand.evidence, inv.evidence, 'shipment-'+site._id];
+  }
+
+  async function runPipeline(siteId){
+    var site = SITES[siteId];
+    site._id = siteId;
+    var traceLog = document.getElementById('traceLog');
+    traceLog.innerHTML = '';
+    var runBtn = document.getElementById('runBtn');
+    runBtn.disabled = true;
+    document.getElementById('approvalPanel').hidden = true;
+    document.getElementById('approvalPanel').innerHTML = '';
+    setReport(null);
+
+    var requestId = 'REQ-' + Math.floor(1000+Math.random()*9000);
+    var startedAt = new Date();
+    var steps = [];
+
+    function pushStep(name, status, detail, payload){
+      var st = { name:name, status:status, detail:detail, payload:payload||null, latency_ms: {Orchestrator:8,'Demand Agent':40,'Inventory Agent':35,'Risk Agent':5,'Compliance Agent':20,'Reporting Agent':15}[name] || 10 };
+      steps.push(st);
+      var li = document.createElement('li');
+      li.className = 'trace-step ' + status;
+      var pre = payload ? ('<pre>'+escapeHtml(JSON.stringify(payload))+'</pre>') : '';
+      li.innerHTML = '<div class="ts-head"><span>'+name+'</span><span class="ts-status">'+status+'</span></div>'+
+                      '<div class="ts-detail">'+detail+'</div>'+pre;
+      traceLog.appendChild(li);
+      return sleep(380);
+    }
+
+    await pushStep('Orchestrator', 'pass', 'Request '+requestId+' — study '+site.study+', site '+siteId+'. Building plan.', { request_id:requestId, study:site.study, site:siteId });
+
+    if (AUTHORIZED_SITES.indexOf(siteId) === -1){
+      await pushStep('Pre-request guardrail', 'fail', 'Site '+siteId+' is outside the requesting user\'s authorized study scope (PH3-ONC-2027).');
+      finishRun(requestId, startedAt, siteId, steps, { final_status:'BLOCKED_UNAUTHORIZED' });
+      runBtn.disabled = false;
+      return;
+    }
+    await pushStep('Pre-request guardrail', 'pass', 'Authorization scope and schema OK.');
+
+    var demand = runDemand(site);
+    if (!demand.ok){
+      await pushStep('Demand Agent', 'fail', 'Missing required field(s): '+demand.missing.join(', ')+'. Escalating.');
+      finishRun(requestId, startedAt, siteId, steps, { final_status:'INSUFFICIENT_EVIDENCE' });
+      runBtn.disabled = false;
+      return;
+    }
+    await pushStep('Demand Agent', 'pass', '30-day demand estimated from enrollment + dosing schedule.', demand.payload);
+
+    var inv = runInventory(site, demand);
+    await pushStep('Inventory Agent', 'pass', 'Usable supply and coverage calculated from stock, safety reserve, and incoming shipments.', inv.payload);
+
+    var risk = runRisk(site, demand, inv);
+    await pushStep('Risk Agent', risk.risk_level === 'LOW' ? 'pass' : (risk.risk_level === 'MEDIUM' ? 'warn' : 'fail'), 'Classified against fixed thresholds; drafted a reviewable replenishment quantity.', risk.payload);
+
+    var compliance = runCompliance(site, demand, inv, risk);
+    await pushStep('Compliance Agent', compliance.stale ? 'warn' : 'pass', compliance.checks.map(function(c){ return c.check+':'+c.status; }).join('  ·  '));
+
+    var evidenceIds = buildEvidenceIds(demand, inv, site);
+    var report = {
+      site_id: siteId, study_id: site.study, risk_level: risk.risk_level, days_to_stockout: risk.days_to_stockout,
+      demand_30d: demand.demand_30d, recommended_action: 'Review shipment of '+risk.recommended_qty+' kits',
+      confidence_score: compliance.confidence, approval_required: compliance.approval_required,
+      evidence_ids: evidenceIds, assumptions: compliance.assumptions, guardrail_results: compliance.checks,
+      request_id: requestId, generated_at: iso(NOW)
+    };
+
+    if (compliance.approval_required){
+      await pushStep('Approval gate', 'warn', 'Routing to human approval before this recommendation can be finalized.');
+      report.final_status = 'PENDING_APPROVAL';
+      setReport(report);
+      renderApprovalPanel(report, function(decision){
+        finishRun(requestId, startedAt, siteId, steps, { final_status: decision.status, approval: decision });
+        report.final_status = decision.status;
+        report.approval = decision;
+        setReport(report);
+        runBtn.disabled = false;
+      });
+    } else {
+      await pushStep('Reporting Agent', 'pass', 'Final report generated from approved state.');
+      report.final_status = 'COMPLETED';
+      setReport(report);
+      finishRun(requestId, startedAt, siteId, steps, { final_status:'COMPLETED' });
+      runBtn.disabled = false;
+    }
+  }
+
+  function escapeHtml(s){ return s.replace(/[&<>]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
+
+  function setReport(report){
+    var card = document.getElementById('reportCard');
+    if (!report){ card.className='report-card empty'; card.innerHTML='Run an assessment above to see the report.'; return; }
+    if (report.final_status === 'BLOCKED_UNAUTHORIZED'){
+      card.className='report-card'; card.innerHTML='<span class="badge" data-risk="BLOCKED">BLOCKED — UNAUTHORIZED</span><p style="margin-top:10px;color:var(--ink-muted)">Request denied before any agent ran. No evidence was read.</p>'; return;
+    }
+    if (report.final_status === 'INSUFFICIENT_EVIDENCE'){
+      card.className='report-card'; card.innerHTML='<span class="badge" data-risk="INSUFFICIENT">INSUFFICIENT_EVIDENCE</span><p style="margin-top:10px;color:var(--ink-muted)">Escalated to a human. The agent will not guess a missing value.</p>'; return;
+    }
+    card.className = 'report-card';
+    var runwayPct = Math.min(100, Math.round((report.days_to_stockout/45)*100));
+    var runwayColor = {LOW:'var(--low)',MEDIUM:'var(--medium)',HIGH:'var(--high)',CRITICAL:'var(--critical)'}[report.risk_level];
+    var confPct = Math.round(report.confidence_score*100);
+    var statusLabel = { PENDING_APPROVAL:'Pending approval', COMPLETED:'Completed', APPROVED:'Approved', REJECTED:'Rejected — returned for revision' }[report.final_status] || report.final_status;
+    card.innerHTML =
+      '<div class="rc-title"><span class="site-id">'+report.site_id+'</span><span class="badge" data-risk="'+report.risk_level+'">'+report.risk_level+'</span></div>'+
+      '<div class="rc-grid">'+
+        '<div class="rc-stat"><span class="rc-label">Days to stockout</span><div class="rc-value num">'+report.days_to_stockout+'</div>'+
+          '<div class="runway"><span style="width:'+runwayPct+'%;background:'+runwayColor+'"></span></div></div>'+
+        '<div class="rc-stat"><span class="rc-label">Confidence</span><div class="rc-value num">'+confPct+'%</div>'+
+          '<div class="meter"><span style="width:'+confPct+'%"></span></div></div>'+
+      '</div>'+
+      '<div class="rc-section"><span class="rc-label">Recommended action</span>'+report.recommended_action+' <span class="chip">requires human approval: '+(report.approval_required?'yes':'no')+'</span></div>'+
+      '<div class="rc-section"><span class="rc-label">Evidence</span>'+report.evidence_ids.map(function(id){ return '<span class="evidence-pill">'+id+'</span>'; }).join('')+'</div>'+
+      '<div class="rc-section"><span class="rc-label">Assumptions</span><ul class="assumptions">'+report.assumptions.map(function(a){ return '<li>'+a+'</li>'; }).join('')+'</ul></div>'+
+      '<div class="rc-section"><span class="rc-label">Status</span>'+statusLabel+'</div>';
+  }
+
+  function renderApprovalPanel(report, onDecision){
+    var panel = document.getElementById('approvalPanel');
+    panel.hidden = false;
+    panel.innerHTML =
+      '<h4>Human approval required — '+report.risk_level+' risk</h4>'+
+      '<label for="approverRole">Approver role</label>'+
+      '<select id="approverRole"><option value="">Select approver role…</option>'+
+      '<option value="Clinical Supply Manager">Clinical Supply Manager</option>'+
+      '<option value="Global Trial Supply Planner">Global Trial Supply Planner</option>'+
+      '<option value="Logistics Coordinator">Logistics Coordinator (view only)</option></select>'+
+      '<label for="rejectReason">Reason (required to reject)</label>'+
+      '<textarea id="rejectReason" placeholder="e.g. awaiting updated enrollment count from site"></textarea>'+
+      '<div class="approval-actions"><button class="btn-approve" id="approveBtn" type="button">Approve</button><button class="btn-reject" id="rejectBtn" type="button">Reject</button></div>'+
+      '<div class="approval-error" id="approvalError"></div>';
+
+    function currentRole(){ return document.getElementById('approverRole').value; }
+    function setError(msg){ document.getElementById('approvalError').textContent = msg; }
+
+    document.getElementById('approveBtn').addEventListener('click', function(){
+      var role = currentRole();
+      if (!role){ setError('Select an approver role first.'); return; }
+      if (role === 'Logistics Coordinator (view only)'){ setError('This role cannot approve HIGH/CRITICAL recommendations — RBAC blocked.'); return; }
+      setError('');
+      var decision = { status:'APPROVED', approver_role:role, reason:'', decided_at: iso(new Date()) };
+      panel.innerHTML += '<div class="approval-result approved">Approved by '+role+' at '+decision.decided_at+'.</div>';
+      disablePanel(panel);
+      onDecision(decision);
+    });
+    document.getElementById('rejectBtn').addEventListener('click', function(){
+      var role = currentRole();
+      var reason = document.getElementById('rejectReason').value.trim();
+      if (!role){ setError('Select an approver role first.'); return; }
+      if (!reason){ setError('A reason is required to reject.'); return; }
+      setError('');
+      var decision = { status:'REJECTED', approver_role:role, reason:reason, decided_at: iso(new Date()) };
+      panel.innerHTML += '<div class="approval-result rejected">Rejected by '+role+': '+escapeHtml(reason)+'</div>';
+      disablePanel(panel);
+      onDecision(decision);
+    });
+  }
+
+  function disablePanel(panel){
+    panel.querySelectorAll('button,select,textarea').forEach(function(el){ el.disabled = true; });
+  }
+
+  var AUDIT_KEY = 'ipRunwayAuditV1';
+  function loadAudit(){
+    try { return JSON.parse(localStorage.getItem(AUDIT_KEY) || '[]'); } catch(e){ return []; }
+  }
+  function saveAudit(list){
+    try { localStorage.setItem(AUDIT_KEY, JSON.stringify(list.slice(-25))); } catch(e){}
+  }
+  function finishRun(requestId, startedAt, siteId, steps, extra){
+    var record = Object.assign({
+      request_id: requestId, site_id: siteId, started_at: iso(startedAt), finished_at: iso(new Date()),
+      steps: steps.map(function(s){ return { name:s.name, status:s.status, latency_ms:s.latency_ms }; })
+    }, extra);
+    var list = loadAudit();
+    list.push(record);
+    saveAudit(list);
+    renderAudit(list);
+    document.getElementById('traceExport').textContent = JSON.stringify(record, null, 2);
+  }
+  function renderAudit(list){
+    var el = document.getElementById('auditTrail');
+    if (!list.length){ el.innerHTML = '<p class="audit-empty">No runs yet this session.</p>'; return; }
+    el.innerHTML = list.slice().reverse().map(function(r){
+      return '<div class="audit-row"><span class="a-req">'+r.request_id+'</span><span>'+r.site_id+'</span>'+
+        '<span>'+r.steps.map(function(s){return s.name.split(' ')[0];}).join(' → ')+'</span>'+
+        '<span>'+r.final_status+'</span><span>'+ (r.approval ? r.approval.status : '—') +'</span></div>';
+    }).join('');
+  }
+
+  function populateSelect(){
+    var sel = document.getElementById('siteSelect');
+    Object.keys(SITES).forEach(function(id){
+      var opt = document.createElement('option');
+      opt.value = id; opt.textContent = SITES[id].label;
+      sel.appendChild(opt);
+    });
+    updateSiteMeta();
+  }
+  function updateSiteMeta(){
+    var id = document.getElementById('siteSelect').value;
+    var s = SITES[id];
+    document.getElementById('siteMeta').textContent = s.country+' · '+s.study+' · '+s.status;
+  }
+
+  document.getElementById('siteSelect').addEventListener('change', updateSiteMeta);
+  document.getElementById('runBtn').addEventListener('click', function(){
+    runPipeline(document.getElementById('siteSelect').value);
+  });
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    try { localStorage.removeItem(AUDIT_KEY); } catch(e){}
+    renderAudit([]);
+  });
+  document.querySelectorAll('[data-try]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.getElementById('siteSelect').value = btn.getAttribute('data-try');
+      updateSiteMeta();
+      document.getElementById('prototype').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block:'start' });
+      setTimeout(function(){ runPipeline(btn.getAttribute('data-try')); }, reduceMotion ? 0 : 500);
+    });
+  });
+
+  populateSelect();
+  renderAudit(loadAudit());
+
+  // Scrollspy
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#navlist a[data-nav]'));
+  var sections = navLinks.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  if ('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          var id = entry.target.id;
+          navLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#'+id); });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    sections.forEach(function(s){ if (s) obs.observe(s); });
+  }
+})();
+</script>

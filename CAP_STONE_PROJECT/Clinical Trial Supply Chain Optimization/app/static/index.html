@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supply Pulse</title>
+<style>
+  :root {
+    --bg: #f7f7f5;
+    --surface: #ffffff;
+    --border: #e3e1dc;
+    --ink: #1f2320;
+    --ink-muted: #6b6f6a;
+    --accent: #2f5d50;
+    --accent-soft: #e8f0ed;
+    --low: #2f7a3d;
+    --medium: #a8760a;
+    --high: #c05a1f;
+    --critical: #b3261e;
+    --low-bg: #eaf5ea;
+    --medium-bg: #fbf1de;
+    --high-bg: #fbe9df;
+    --critical-bg: #fbe6e4;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    padding-block: 24px;
+  }
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-inline: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  header h1 {
+    font-size: 1.5rem;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  header p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.92rem;
+  }
+  .badge-synthetic {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 700px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .panel h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-muted);
+    margin: 0 0 12px;
+  }
+  .site-list { display: flex; flex-direction: column; gap: 6px; }
+  .site-btn {
+    text-align: left;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--ink);
+  }
+  .site-btn strong { display: block; font-size: 0.92rem; }
+  .site-btn span { display: block; color: var(--ink-muted); font-size: 0.78rem; margin-top: 2px; }
+  .site-btn:hover { border-color: var(--accent); }
+  .site-btn.active { border-color: var(--accent); background: var(--accent-soft); }
+  .scope-row { display: flex; gap: 8px; align-items: center; margin-top: 12px; }
+  .scope-row input {
+    flex: 1;
+    font-size: 0.8rem;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .empty {
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+    padding: 40px 0;
+    text-align: center;
+  }
+  .result-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .result-head h3 { margin: 0; font-size: 1.1rem; }
+  .risk-pill {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .risk-LOW { color: var(--low); background: var(--low-bg); }
+  .risk-MEDIUM { color: var(--medium); background: var(--medium-bg); }
+  .risk-HIGH { color: var(--high); background: var(--high-bg); }
+  .risk-CRITICAL { color: var(--critical); background: var(--critical-bg); }
+  .status-pill {
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #eee;
+    color: var(--ink-muted);
+  }
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .metric {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .metric .label { font-size: 0.72rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.03em; }
+  .metric .value { font-size: 1.15rem; font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .block { margin-top: 16px; }
+  .block h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-muted); margin: 0 0 8px; }
+  .rec-box {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    background: #fafaf8;
+    font-size: 0.92rem;
+  }
+  ul.plain { margin: 0; padding-left: 18px; font-size: 0.85rem; color: var(--ink); }
+  ul.plain li { margin-bottom: 3px; }
+  table.guard { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  table.guard th, table.guard td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  .g-PASS { color: var(--low); font-weight: 600; }
+  .g-WARN { color: var(--medium); font-weight: 600; }
+  .g-FAIL { color: var(--critical); font-weight: 600; }
+  .g-TRUE { color: var(--medium); font-weight: 600; }
+  .g-FALSE { color: var(--low); font-weight: 600; }
+  .approval-box {
+    margin-top: 16px;
+    border: 1px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .approval-box h4 { margin: 0 0 10px; color: var(--accent); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.04em; }
+  .approval-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  select, input[type=text] {
+    font-size: 0.85rem;
+    padding: 7px 9px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+  input[type=text] { flex: 1; min-width: 160px; }
+  button.action {
+    font-size: 0.85rem;
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    color: white;
+  }
+  button.approve { background: var(--low); }
+  button.reject { background: var(--critical); }
+  button.assess-btn {
+    font-size: 0.85rem;
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+  }
+  .decision-note { margin-top: 10px; font-size: 0.85rem; }
+  .audit table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .audit th, .audit td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  .audit tbody tr:hover { background: #fafaf8; }
+  footer { color: var(--ink-muted); font-size: 0.75rem; text-align: center; padding-top: 8px; }
+  a.docs-link { color: var(--accent); text-decoration: none; font-size: 0.8rem; }
+  .error-box {
+    border: 1px solid var(--critical);
+    background: var(--critical-bg);
+    color: var(--critical);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Supply Pulse <span class="badge-synthetic">synthetic data</span></h1>
+    <p>Clinical Trial Stockout Risk Assessment Agent — decision support only. <a class="docs-link" href="/docs" target="_blank">API reference &rarr;</a></p>
+  </header>
+
+  <div class="layout">
+    <div class="panel">
+      <h2>Sites</h2>
+      <div class="site-list" id="siteList"></div>
+      <div class="scope-row">
+        <label style="font-size:0.75rem;color:var(--ink-muted)">Scope</label>
+        <input type="text" id="scopeInput" value="PH3-ONC-2027">
+      </div>
+    </div>
+
+    <div class="panel" id="resultPanel">
+      <h2>Assessment</h2>
+      <div class="empty" id="emptyState">Select a site to run the Orchestrator → Demand → Inventory → Risk → Compliance pipeline.</div>
+      <div id="resultBody" style="display:none"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="askPanel">
+    <h2>Ask <span style="font-weight:400;text-transform:none;letter-spacing:0">— read-only, grounded on the audit trail below</span></h2>
+    <p style="color:var(--ink-muted);font-size:0.8rem;margin:0 0 12px">
+      This is the only place an LLM is used. It can only narrate assessments already run — it cannot run a new one, approve/reject anything, or answer about a site with no record yet.
+    </p>
+    <div class="approval-row">
+      <input type="text" id="askInput" placeholder="e.g. Which sites are at risk of stockout in the next 30 days, and why?">
+      <button class="assess-btn" onclick="askQuestion()">Ask</button>
+    </div>
+    <div id="askBody" style="margin-top:12px"></div>
+  </div>
+
+  <div class="panel audit">
+    <h2>Audit trail <span style="font-weight:400;text-transform:none;letter-spacing:0">— last 10 runs</span></h2>
+    <div id="auditBody"></div>
+  </div>
+
+  <div class="panel audit">
+    <h2>MCP tool calls <span style="font-weight:400;text-transform:none;letter-spacing:0">— last 10, mock MCP layer (§12/§13)</span></h2>
+    <p style="color:var(--ink-muted);font-size:0.8rem;margin:0 0 12px">
+      Every enrollment/inventory/shipment/site-master read an agent made, in order — proof the pre-tool allowlist and scope check ran, not just that the answer came out right.
+    </p>
+    <div id="mcpLogBody"></div>
+  </div>
+
+  <div class="panel" id="testsPanel">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px">
+      <h2 style="margin-bottom:4px">Testing &amp; test scenario results <span style="font-weight:400;text-transform:none;letter-spacing:0">— CLAUDE.md §17</span></h2>
+      <button class="assess-btn" onclick="loadTests()">Run tests</button>
+    </div>
+    <p style="color:var(--ink-muted);font-size:0.8rem;margin:0 0 12px">
+      Runs the real pytest suite on demand — not a cached or illustrative score.
+    </p>
+    <div id="testsBody"></div>
+  </div>
+
+  <footer>Supply Pulse prototype · all site, enrollment, inventory, and shipment data is synthetic</footer>
+</div>
+
+<script>
+const API = "";
+let currentSite = null;
+let currentReport = null;
+
+const RISK_ORDER = { LOW: 0, MEDIUM: 1, HIGH: 2, CRITICAL: 3 };
+
+async function loadSites() {
+  const res = await fetch(API + "/sites");
+  const sites = await res.json();
+  const list = document.getElementById("siteList");
+  list.innerHTML = "";
+  sites.forEach(s => {
+    const btn = document.createElement("button");
+    btn.className = "site-btn";
+    btn.id = "site-" + s.site_id;
+    btn.innerHTML = `<strong>${s.site_id}</strong><span>${s.country} · ${s.hint}</span>`;
+    btn.onclick = () => runAssessment(s.site_id);
+    list.appendChild(btn);
+  });
+}
+
+function scopeList() {
+  return document.getElementById("scopeInput").value.split(",").map(s => s.trim()).filter(Boolean);
+}
+
+async function runAssessment(siteId) {
+  currentSite = siteId;
+  document.querySelectorAll(".site-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("site-" + siteId).classList.add("active");
+
+  const res = await fetch(API + "/assess", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ site_id: siteId, requesting_scope: scopeList() })
+  });
+  const report = await res.json();
+  currentReport = report;
+  renderReport(report);
+  loadAudit();
+  loadMcpLog();
+}
+
+function renderReport(r) {
+  document.getElementById("emptyState").style.display = "none";
+  const body = document.getElementById("resultBody");
+  body.style.display = "block";
+
+  if (r.final_status === "BLOCKED_UNAUTHORIZED") {
+    body.innerHTML = `
+      <div class="result-head">
+        <h3>${r.site_id}</h3>
+        <span class="status-pill">${r.final_status}</span>
+      </div>
+      <div class="error-box" style="margin-top:12px">
+        Blocked before any agent ran — the requesting scope does not include this site's study.
+        No enrollment, inventory, or risk data was read.
+      </div>`;
+    return;
+  }
+  if (r.final_status === "INSUFFICIENT_EVIDENCE") {
+    body.innerHTML = `
+      <div class="result-head">
+        <h3>${r.site_id}</h3>
+        <span class="status-pill">${r.final_status}</span>
+      </div>
+      <div class="error-box" style="margin-top:12px">
+        Required evidence is missing, so no risk was calculated. The agent escalates rather than guessing.
+      </div>`;
+    return;
+  }
+
+  let approvalHtml = "";
+  if (r.final_status === "PENDING_APPROVAL") {
+    approvalHtml = `
+      <div class="approval-box">
+        <h4>Human approval required</h4>
+        <div class="approval-row">
+          <select id="approverRole">
+            <option>Clinical Supply Manager</option>
+            <option>Global Trial Supply Planner</option>
+            <option>Logistics Coordinator</option>
+          </select>
+          <input type="text" id="reasonInput" placeholder="Reason (required to reject)">
+          <button class="action approve" onclick="decide('APPROVED')">Approve</button>
+          <button class="action reject" onclick="decide('REJECTED')">Reject</button>
+        </div>
+        <div class="decision-note" id="decisionNote"></div>
+      </div>`;
+  } else if (r.final_status === "APPROVED" || r.final_status === "REJECTED") {
+    const a = r.approval;
+    approvalHtml = `
+      <div class="approval-box">
+        <h4>Decision recorded</h4>
+        <p style="margin:0">${r.final_status}${a ? ` by ${a.approver_role}` : ""}</p>
+        ${a && a.reason ? `<p style="margin:6px 0 0;color:var(--ink-muted);font-size:0.85rem">Reason: ${a.reason}</p>` : ""}
+        ${a ? `<p style="margin:6px 0 0;color:var(--ink-muted);font-size:0.75rem">Decided at ${a.decided_at}</p>` : ""}
+      </div>`;
+  }
+
+  body.innerHTML = `
+    <div class="result-head">
+      <h3>${r.site_id} <span style="color:var(--ink-muted);font-size:0.85rem;font-weight:400">${r.study_id || ""}</span></h3>
+      <span class="risk-pill risk-${r.risk_level}">${r.risk_level}</span>
+      <span class="status-pill">${r.final_status}</span>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="label">Days to stockout</div><div class="value">${r.days_to_stockout}</div></div>
+      <div class="metric"><div class="label">30-day demand</div><div class="value">${r.demand_30d} kits</div></div>
+      <div class="metric"><div class="label">Confidence</div><div class="value">${(r.confidence_score * 100).toFixed(0)}%</div></div>
+    </div>
+    <div class="block">
+      <h4>Recommended action</h4>
+      <div class="rec-box">${r.recommended_action}</div>
+    </div>
+    <div class="block">
+      <h4>Evidence &amp; assumptions</h4>
+      <ul class="plain">
+        ${r.evidence_ids.map(e => `<li>evidence: <code>${e}</code></li>`).join("")}
+        ${r.assumptions.map(a => `<li>assumption: ${a}</li>`).join("")}
+      </ul>
+    </div>
+    <div class="block">
+      <h4>Guardrail checks</h4>
+      <table class="guard">
+        <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+        <tbody>
+          ${r.guardrail_results.map(g => `<tr><td>${g.check}</td><td class="g-${g.status}">${g.status}</td><td>${g.detail || ""}</td></tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+    ${approvalHtml}
+  `;
+}
+
+async function decide(decision) {
+  const role = document.getElementById("approverRole").value;
+  const reason = document.getElementById("reasonInput").value.trim();
+  const note = document.getElementById("decisionNote");
+  const res = await fetch(API + "/approve", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      request_id: currentReport.request_id,
+      approver_role: role,
+      decision: decision,
+      reason: reason || null
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    note.innerHTML = `<span style="color:var(--critical)">${err.detail}</span>`;
+    return;
+  }
+  const updated = await res.json();
+  currentReport = updated;
+  renderReport(updated);
+  loadAudit();
+}
+
+async function loadAudit() {
+  const res = await fetch(API + "/audit?limit=10");
+  const rows = await res.json();
+  const el = document.getElementById("auditBody");
+  if (!rows.length) {
+    el.innerHTML = `<p class="empty" style="padding:12px 0">No runs yet.</p>`;
+    return;
+  }
+  el.innerHTML = `
+    <table>
+      <thead><tr><th>Request</th><th>Site</th><th>Status</th><th>Latency</th><th>When</th></tr></thead>
+      <tbody>
+        ${rows.map(r => `<tr><td>${r.request_id}</td><td>${r.site_id}</td><td>${r.final_status}</td><td>${r.latency_ms != null ? r.latency_ms + " ms" : "—"}</td><td>${r.created_at}</td></tr>`).join("")}
+      </tbody>
+    </table>`;
+}
+
+async function loadMcpLog() {
+  const res = await fetch(API + "/mcp-log?limit=10");
+  const rows = await res.json();
+  const el = document.getElementById("mcpLogBody");
+  if (!rows.length) {
+    el.innerHTML = `<p class="empty" style="padding:12px 0">No MCP calls yet.</p>`;
+    return;
+  }
+  el.innerHTML = `
+    <table>
+      <thead><tr><th>Tool</th><th>Site</th><th>Source ID</th><th>Scope</th><th>Latency</th><th>When</th></tr></thead>
+      <tbody>
+        ${rows.map(r => `<tr><td><code>${r.tool}</code></td><td>${r.site_id}</td><td><code>${r.source_id}</code></td><td>${r.requesting_scope.join(", ") || "—"}</td><td>${r.latency_ms} ms</td><td>${r.created_at}</td></tr>`).join("")}
+      </tbody>
+    </table>`;
+}
+
+async function loadTests() {
+  const body = document.getElementById("testsBody");
+  body.innerHTML = `<p class="empty" style="padding:12px 0">Running pytest…</p>`;
+  const res = await fetch(API + "/tests");
+  const data = await res.json();
+  body.innerHTML = `
+    <div class="metrics" style="grid-template-columns:repeat(3,1fr);margin-top:0">
+      <div class="metric"><div class="label">Passed</div><div class="value" style="color:var(--low)">${data.passed}</div></div>
+      <div class="metric"><div class="label">Failed</div><div class="value" style="color:var(--critical)">${data.failed}</div></div>
+      <div class="metric"><div class="label">Total run</div><div class="value">${data.total}</div></div>
+    </div>
+    <div class="block">
+      <h4>Scenario results</h4>
+      <table class="guard">
+        <thead><tr><th>Scenario</th><th>Test</th><th>Outcome</th></tr></thead>
+        <tbody>
+          ${data.results.map(r => `<tr><td>${r.scenario}</td><td><code>${r.test}</code></td><td class="g-${r.outcome === 'PASSED' ? 'PASS' : 'FAIL'}">${r.outcome}</td></tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+    <div class="block">
+      <h4>Not yet covered</h4>
+      <ul class="plain">
+        ${data.scenarios_not_covered.map(s => `<li>${s}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+}
+
+async function askQuestion() {
+  const input = document.getElementById("askInput");
+  const question = input.value.trim();
+  if (!question) return;
+  const body = document.getElementById("askBody");
+  body.innerHTML = `<p class="empty" style="padding:8px 0">Asking…</p>`;
+  const res = await fetch(API + "/ask", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    body.innerHTML = `<div class="error-box">${err.detail}</div>`;
+    return;
+  }
+  const data = await res.json();
+  const warn = data.unverified_site_ids.length
+    ? `<div class="error-box" style="margin-top:8px">Mentions site(s) not found in the audit trail: ${data.unverified_site_ids.join(", ")} — verify before trusting this line.</div>`
+    : "";
+  body.innerHTML = `
+    <div class="rec-box">${data.answer}</div>
+    ${warn}
+    <p style="color:var(--ink-muted);font-size:0.75rem;margin:8px 0 0">
+      Grounded on ${data.grounded_on_request_ids.length} persisted run(s)${data.grounded_on_request_ids.length ? ": " + data.grounded_on_request_ids.join(", ") : ""}.
+    </p>
+    <p style="color:var(--ink-muted);font-size:0.75rem;margin:4px 0 0">
+      Model: <code>${data.model}</code> (${data.prompt_version}) · ${data.prompt_tokens ?? "?"} + ${data.completion_tokens ?? "?"} tokens · ${data.latency_ms} ms
+    </p>`;
+}
+
+loadSites();
+loadAudit();
+loadMcpLog();
+loadTests();
+</script>
+</body>
+</html>
