@@ -73,6 +73,9 @@ Example:
 Agent should:
 Understand question → identify KPI → plan analysis → execute Python/Pandas → validate result → generate visualization → explain result.
 Never fabricate numbers. All numerical claims must come from executed analysis.
+Memory (two tiers):
+Short-term: `conversation_history` on the LangGraph state (`graph/state.py`). Holds the current session's chat turns in-process only. The last `SHORT_TERM_MEMORY_TURNS` turns (`config/settings.py`, default 6) are injected into the analyst prompt as `CONVERSATION_HISTORY` so follow-up questions ("what about that region?", "vs last time?") resolve correctly. Used only to disambiguate references — never a source of numbers.
+Long-term: `services/memory_service.py`, SQLite-backed (`data/db/memory.sqlite`), keyed by `session_id`. Persists every validated turn across app restarts and is browsable/resumable via the Memory tab, independent of the in-process short-term buffer.
 7. Dashboard Agent
 Generate interactive Plotly visualizations based on user questions.
 Use appropriate charts automatically:

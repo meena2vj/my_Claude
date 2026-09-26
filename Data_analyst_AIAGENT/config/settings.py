@@ -32,6 +32,7 @@ ALLOWED_CONTEXT_EXTENSIONS: tuple[str, ...] = tuple(
     os.environ.get("ALLOWED_CONTEXT_EXTENSIONS", ".pdf,.txt").split(",")
 )
 MAX_ANALYST_RETRIES: int = 2
+SHORT_TERM_MEMORY_TURNS: int = 6  # last N ChatTurns (~3 exchanges) fed back into the analyst prompt
 
 # --- RAG business-context layer ---
 EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"

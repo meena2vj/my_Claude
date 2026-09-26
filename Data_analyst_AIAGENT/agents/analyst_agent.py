@@ -9,7 +9,7 @@ rather than reaching the user.
 """
 
 from graph.state import AgentState, AnalysisResult, ChatTurn, KPIDefinition
-from config.settings import INSUFFICIENT_CONTEXT_MESSAGE
+from config.settings import INSUFFICIENT_CONTEXT_MESSAGE, SHORT_TERM_MEMORY_TURNS
 from observability.metrics import record_tool_call
 from observability import trace_store
 from services import memory_service
@@ -21,10 +21,12 @@ import hashlib
 _SYSTEM_PROMPT = (
     "You are a data analyst. You are given NUMERIC_DATA -- the exact, "
     "already-computed result table for the user's question -- and, "
-    "optionally, BUSINESS_CONTEXT excerpts. Write a short (2-4 sentence) "
-    "plain-English explanation of NUMERIC_DATA. Every number you state MUST "
-    "appear in NUMERIC_DATA verbatim -- never invent or round differently. "
-    "Use BUSINESS_CONTEXT only for qualitative framing, never as a source of "
+    "optionally, BUSINESS_CONTEXT excerpts and CONVERSATION_HISTORY. Write a "
+    "short (2-4 sentence) plain-English explanation of NUMERIC_DATA. Every "
+    "number you state MUST appear in NUMERIC_DATA verbatim -- never invent or "
+    "round differently. Use BUSINESS_CONTEXT only for qualitative framing, "
+    "and CONVERSATION_HISTORY only to resolve references and follow-ups "
+    "(e.g. \"that region\", \"vs last time\") -- neither is ever a source of "
     "numbers."
 )
 
@@ -59,6 +61,13 @@ def _plan_columns(
 def _dataset_fingerprint(df) -> str:
     raw = f"{sorted(df.columns)}|{len(df)}"
     return hashlib.sha256(raw.encode()).hexdigest()[:12]
+
+
+def _format_conversation_history(history: list[ChatTurn]) -> str:
+    recent = history[-SHORT_TERM_MEMORY_TURNS:]
+    if not recent:
+        return "(no prior turns this session)"
+    return "\n".join(f"{turn.role.upper()}: {turn.content}" for turn in recent)
 
 
 def run(state: AgentState) -> dict:
@@ -100,9 +109,11 @@ def run(state: AgentState) -> dict:
         "\n\n".join(f"[{c.filename} p.{c.page}] {c.text}" for c in state["business_context_chunks"][:5])
         or "(no business context documents uploaded)"
     )
+    history_block = _format_conversation_history(state["conversation_history"])
     user_prompt = (
         f"QUESTION: {question}\n\nNUMERIC_DATA:\n{numeric_block}\n\n"
-        f"BUSINESS_CONTEXT (qualitative, cite only):\n{context_block}"
+        f"BUSINESS_CONTEXT (qualitative, cite only):\n{context_block}\n\n"
+        f"CONVERSATION_HISTORY (context/follow-ups only, cite no numbers from here):\n{history_block}"
     )
 
     llm_result = call_llm(_SYSTEM_PROMPT, user_prompt, node_name="analyst", trace_id=state["trace_id"])

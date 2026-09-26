@@ -1,0 +1,15 @@
+2026-09-26 06:00:38.525 Uvicorn server started on :::8502
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8502
+  Network URL: http://10.160.2.204:8502
+
+  Help agents write better Streamlit apps?
+  Install the official Streamlit skills by running streamlit skills in your terminal.
+
+{"ts": "2026-09-26T06:00:43.273859+00:00", "level": "INFO", "logger": "faiss.loader", "message": "Loading faiss with AVX2 support."}
+{"ts": "2026-09-26T06:00:43.274367+00:00", "level": "INFO", "logger": "faiss.loader", "message": "Could not load library with AVX2 support due to:\nModuleNotFoundError(\"No module named 'faiss.swigfaiss_avx2'\")"}
+{"ts": "2026-09-26T06:00:43.274539+00:00", "level": "INFO", "logger": "faiss.loader", "message": "Loading faiss."}
+{"ts": "2026-09-26T06:00:43.374247+00:00", "level": "INFO", "logger": "faiss.loader", "message": "Successfully loaded faiss."}
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
